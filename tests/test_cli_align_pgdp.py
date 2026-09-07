@@ -7,8 +7,9 @@ from hashlib import sha256
 from pathlib import Path
 
 import pytest
-from pdomain_ocr_synth.cli import DESTINATION_EXIT, VALIDATION_EXIT, build_parser, main
 from PIL import Image
+
+from pdomain_pgdp_measure.cli import DESTINATION_EXIT, VALIDATION_EXIT, build_parser, main
 
 
 def _write_line_page(path: Path) -> None:
@@ -48,7 +49,7 @@ def build_alignment_fixture(tmp_path: Path) -> tuple[Path, Path]:
     assert (
         main(
             [
-                "rank-pgdp",
+                "rank",
                 str(corpus_root),
                 "--output",
                 str(ranking_path),
@@ -64,7 +65,7 @@ def build_alignment_fixture(tmp_path: Path) -> tuple[Path, Path]:
     assert (
         main(
             [
-                "profile-pgdp",
+                "profile",
                 str(corpus_root),
                 "--ranking",
                 str(ranking_path),
@@ -79,10 +80,10 @@ def build_alignment_fixture(tmp_path: Path) -> tuple[Path, Path]:
 
 def test_align_pgdp_parser_accepts_the_pinned_interface() -> None:
     args = build_parser().parse_args(
-        ["align-pgdp", "corpus", "--profile", "profile.json", "--output", "alignment.json"]
+        ["align", "corpus", "--profile", "profile.json", "--output", "alignment.json"]
     )
 
-    assert args.command == "align-pgdp"
+    assert args.command == "align"
     assert args.corpus_root == "corpus"
     assert args.profile == "profile.json"
     assert args.output == "alignment.json"
@@ -91,7 +92,7 @@ def test_align_pgdp_parser_accepts_the_pinned_interface() -> None:
 @pytest.mark.parametrize("arguments", [[], ["--profile", "profile.json"], ["--output", "out.json"]])
 def test_align_pgdp_parser_requires_profile_and_output(arguments: list[str]) -> None:
     with pytest.raises(SystemExit) as error:
-        _ = build_parser().parse_args(["align-pgdp", "corpus", *arguments])
+        _ = build_parser().parse_args(["align", "corpus", *arguments])
 
     assert error.value.code == 2
 
@@ -105,7 +106,7 @@ def test_align_pgdp_writes_snapshot_safe_report(
 
     result = main(
         [
-            "align-pgdp",
+            "align",
             str(corpus_root),
             "--profile",
             str(profile_path),
@@ -133,7 +134,7 @@ def test_align_pgdp_rejects_malformed_or_unsupported_profile(
 
     result = main(
         [
-            "align-pgdp",
+            "align",
             str(corpus_root),
             "--profile",
             str(profile_path),
@@ -162,7 +163,7 @@ def test_align_pgdp_rejects_unsafe_destinations(
 
     result = main(
         [
-            "align-pgdp",
+            "align",
             str(corpus_root),
             "--profile",
             str(profile_path),

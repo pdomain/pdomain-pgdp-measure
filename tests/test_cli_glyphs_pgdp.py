@@ -6,14 +6,14 @@ import json
 from pathlib import Path
 
 import pytest
-from pdomain_ocr_synth.cli import (
+
+from pdomain_pgdp_measure.cli import (
     DESTINATION_EXIT,
     USAGE_EXIT,
     VALIDATION_EXIT,
     build_parser,
     main,
 )
-
 from pdomain_pgdp_measure.glyph_models import GlyphManifest, read_rows
 from tests.test_pgdp_glyphs import Fixture, build_glyph_fixture
 
@@ -26,7 +26,7 @@ def fixture(tmp_path_factory: pytest.TempPathFactory) -> Fixture:
 def _run(fixture: Fixture, output: Path, *extra: str) -> int:
     return main(
         [
-            "glyphs-pgdp",
+            "glyphs",
             str(fixture.corpus_root),
             "--alignment",
             str(fixture.alignment_path),
@@ -42,7 +42,7 @@ def _run(fixture: Fixture, output: Path, *extra: str) -> int:
 def test_parser_accepts_the_pinned_interface() -> None:
     args = build_parser().parse_args(
         [
-            "glyphs-pgdp",
+            "glyphs",
             "corpus",
             "--alignment",
             "alignment.json",
@@ -55,7 +55,7 @@ def test_parser_accepts_the_pinned_interface() -> None:
         ]
     )
 
-    assert args.command == "glyphs-pgdp"
+    assert args.command == "glyphs"
     assert args.corpus_root == "corpus"
     assert args.alignment == "alignment.json"
     assert args.profile == "profile.json"
@@ -65,7 +65,7 @@ def test_parser_accepts_the_pinned_interface() -> None:
 
 def test_geometry_defaults_to_off() -> None:
     args = build_parser().parse_args(
-        ["glyphs-pgdp", "corpus", "--alignment", "a.json", "--profile", "p.json", "--output", "g"]
+        ["glyphs", "corpus", "--alignment", "a.json", "--profile", "p.json", "--output", "g"]
     )
 
     assert args.geometry is None
@@ -81,14 +81,14 @@ def test_geometry_defaults_to_off() -> None:
 )
 def test_the_three_required_arguments_are_required(arguments: list[str]) -> None:
     with pytest.raises(SystemExit):
-        _ = build_parser().parse_args(["glyphs-pgdp", "corpus", *arguments])
+        _ = build_parser().parse_args(["glyphs", "corpus", *arguments])
 
 
 def test_a_missing_corpus_root_is_a_usage_error(fixture: Fixture, tmp_path: Path) -> None:
     assert (
         main(
             [
-                "glyphs-pgdp",
+                "glyphs",
                 str(tmp_path / "absent"),
                 "--alignment",
                 str(fixture.alignment_path),
@@ -108,7 +108,7 @@ def test_a_corpus_root_that_is_a_file_is_a_usage_error(fixture: Fixture, tmp_pat
     assert (
         main(
             [
-                "glyphs-pgdp",
+                "glyphs",
                 str(not_a_directory),
                 "--alignment",
                 str(fixture.alignment_path),
@@ -132,7 +132,7 @@ def test_an_unreadable_alignment_is_a_validation_error(fixture: Fixture, tmp_pat
     assert (
         main(
             [
-                "glyphs-pgdp",
+                "glyphs",
                 str(fixture.corpus_root),
                 "--alignment",
                 str(tmp_path / "absent.json"),
@@ -156,7 +156,7 @@ def test_a_profile_that_does_not_match_the_alignment_is_a_validation_error(
     assert (
         main(
             [
-                "glyphs-pgdp",
+                "glyphs",
                 str(fixture.corpus_root),
                 "--alignment",
                 str(fixture.alignment_path),

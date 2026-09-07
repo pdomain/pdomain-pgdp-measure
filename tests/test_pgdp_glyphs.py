@@ -194,7 +194,7 @@ def _tokenized_lines(
 def build_glyph_fixture(tmp_path: Path) -> Fixture:
     """Draw two identical pages, profile them for real, and accept the body lines 1:1."""
 
-    from pdomain_ocr_synth.cli import main
+    from pdomain_pgdp_measure.cli import main
 
     corpus_root = tmp_path / "corpus"
     project = corpus_root / "projectIDone"
@@ -227,7 +227,7 @@ def build_glyph_fixture(tmp_path: Path) -> Fixture:
     assert (
         main(
             [
-                "rank-pgdp",
+                "rank",
                 str(corpus_root),
                 "--output",
                 str(ranking_path),
@@ -243,7 +243,7 @@ def build_glyph_fixture(tmp_path: Path) -> Fixture:
     assert (
         main(
             [
-                "profile-pgdp",
+                "profile",
                 str(corpus_root),
                 "--ranking",
                 str(ranking_path),

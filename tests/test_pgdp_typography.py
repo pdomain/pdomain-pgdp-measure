@@ -111,7 +111,7 @@ def _source_line(ordinal: int, text: str, byte_start: int) -> WireSourceLine:
 def build_fixture(tmp_path: Path) -> Fixture:
     """Draw two identical pages, profile them for real, and accept them 1:1."""
 
-    from pdomain_ocr_synth.cli import main
+    from pdomain_pgdp_measure.cli import main
 
     corpus_root = tmp_path / "corpus"
     project = corpus_root / "projectIDone"
@@ -143,7 +143,7 @@ def build_fixture(tmp_path: Path) -> Fixture:
     assert (
         main(
             [
-                "rank-pgdp",
+                "rank",
                 str(corpus_root),
                 "--output",
                 str(ranking_path),
@@ -159,7 +159,7 @@ def build_fixture(tmp_path: Path) -> Fixture:
     assert (
         main(
             [
-                "profile-pgdp",
+                "profile",
                 str(corpus_root),
                 "--ranking",
                 str(ranking_path),

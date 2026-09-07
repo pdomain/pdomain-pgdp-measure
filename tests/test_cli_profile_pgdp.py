@@ -7,10 +7,10 @@ import json
 from pathlib import Path
 
 import pytest
-from pdomain_ocr_synth.cli import build_parser, main
 from PIL import Image
 
 from pdomain_pgdp_measure import image_measurement
+from pdomain_pgdp_measure.cli import build_parser, main
 
 
 def _write_project(corpus_root: Path, *, image_bytes: bytes | None = None) -> None:
@@ -49,7 +49,7 @@ def _write_project(corpus_root: Path, *, image_bytes: bytes | None = None) -> No
 def _ranking_for(corpus_root: Path, ranking_path: Path) -> None:
     rc = main(
         [
-            "rank-pgdp",
+            "rank",
             str(corpus_root),
             "--output",
             str(ranking_path),
@@ -72,10 +72,10 @@ def _prepared_ranking(tmp_path: Path, *, image_bytes: bytes | None = None) -> tu
 
 def test_profile_pgdp_parser_requires_the_pinned_options() -> None:
     args = build_parser().parse_args(
-        ["profile-pgdp", "corpus", "--ranking", "ranking.json", "--output", "profile.json"]
+        ["profile", "corpus", "--ranking", "ranking.json", "--output", "profile.json"]
     )
 
-    assert args.command == "profile-pgdp"
+    assert args.command == "profile"
     assert args.corpus_root == "corpus"
     assert args.ranking == "ranking.json"
     assert args.output == "profile.json"
@@ -86,7 +86,7 @@ def test_profile_pgdp_parser_requires_the_pinned_options() -> None:
 )
 def test_profile_pgdp_parser_requires_ranking_and_output(arguments: list[str]) -> None:
     with pytest.raises(SystemExit) as error:
-        _ = build_parser().parse_args(["profile-pgdp", "corpus", *arguments])
+        _ = build_parser().parse_args(["profile", "corpus", *arguments])
 
     assert error.value.code == 2
 
@@ -99,7 +99,7 @@ def test_profile_pgdp_rejects_a_missing_ranking_input(
 
     rc = main(
         [
-            "profile-pgdp",
+            "profile",
             str(corpus_root),
             "--ranking",
             str(tmp_path / "missing.json"),
@@ -124,7 +124,7 @@ def test_profile_pgdp_rejects_malformed_ranking_input(
 
     rc = main(
         [
-            "profile-pgdp",
+            "profile",
             str(corpus_root),
             "--ranking",
             str(ranking_path),
@@ -147,7 +147,7 @@ def test_profile_pgdp_keeps_a_malformed_scan_as_a_diagnostic(
 
     rc = main(
         [
-            "profile-pgdp",
+            "profile",
             str(corpus_root),
             "--ranking",
             str(ranking_path),
@@ -198,7 +198,7 @@ def test_profile_pgdp_aborts_when_temporary_scan_snapshot_storage_is_full(
 
     rc = main(
         [
-            "profile-pgdp",
+            "profile",
             str(corpus_root),
             "--ranking",
             str(ranking_path),
@@ -230,7 +230,7 @@ def test_profile_pgdp_rejects_unsafe_destinations(
 
     rc = main(
         [
-            "profile-pgdp",
+            "profile",
             str(corpus_root),
             "--ranking",
             str(ranking_path),
@@ -259,7 +259,7 @@ def test_profile_pgdp_preserves_existing_output_after_interrupted_replacement(
 
     rc = main(
         [
-            "profile-pgdp",
+            "profile",
             str(corpus_root),
             "--ranking",
             str(ranking_path),
@@ -293,7 +293,7 @@ def test_profile_pgdp_reports_both_replacement_and_cleanup_failures(
 
     rc = main(
         [
-            "profile-pgdp",
+            "profile",
             str(corpus_root),
             "--ranking",
             str(ranking_path),
@@ -317,7 +317,7 @@ def test_profile_pgdp_is_byte_deterministic(
 
     first = main(
         [
-            "profile-pgdp",
+            "profile",
             str(corpus_root),
             "--ranking",
             str(ranking_path),
@@ -327,7 +327,7 @@ def test_profile_pgdp_is_byte_deterministic(
     )
     second = main(
         [
-            "profile-pgdp",
+            "profile",
             str(corpus_root),
             "--ranking",
             str(ranking_path),
@@ -363,7 +363,7 @@ def test_profile_pgdp_hashes_and_parses_one_ranking_snapshot(
 
     rc = main(
         [
-            "profile-pgdp",
+            "profile",
             str(corpus_root),
             "--ranking",
             str(ranking_path),
@@ -400,7 +400,7 @@ def test_whole_book_pools_every_page_but_emits_only_the_ranked_page(tmp_path: Pa
 
     rc = main(
         [
-            "profile-pgdp",
+            "profile",
             str(corpus_root),
             "--ranking",
             str(ranking_path),
@@ -429,7 +429,7 @@ def test_default_mode_pools_only_the_ranked_page(tmp_path: Path) -> None:
 
     rc = main(
         [
-            "profile-pgdp",
+            "profile",
             str(corpus_root),
             "--ranking",
             str(ranking_path),

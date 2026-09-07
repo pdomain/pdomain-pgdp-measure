@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+from importlib.metadata import PackageNotFoundError, version
+
+try:
+    __version__ = version("pdomain-pgdp-measure")
+except PackageNotFoundError:  # pragma: no cover - source checkout without an install
+    __version__ = "0.0.0+unknown"
+
 from pdomain_pgdp_measure.alignment_models import (
     ALIGNMENT_ALGORITHM_VERSION,
     ALIGNMENT_SCHEMA_VERSION,

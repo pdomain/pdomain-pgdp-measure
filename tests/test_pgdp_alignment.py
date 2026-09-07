@@ -11,12 +11,12 @@ from shutil import copytree, rmtree
 from typing import TYPE_CHECKING
 
 import pytest
-from pdomain_ocr_synth.cli import main
 from PIL import Image
 from pydantic import TypeAdapter
 
 from pdomain_pgdp_measure import __version__, alignment
 from pdomain_pgdp_measure.alignment import build_alignment_report
+from pdomain_pgdp_measure.cli import main
 from pdomain_pgdp_measure.image_measurement import open_image_snapshot
 from pdomain_pgdp_measure.paths import (
     ImageResolution,
@@ -52,7 +52,7 @@ def _build_profile(corpus_root: Path, profile_path: Path) -> None:
     assert (
         main(
             [
-                "rank-pgdp",
+                "rank",
                 str(corpus_root),
                 "--output",
                 str(ranking_path),
@@ -67,7 +67,7 @@ def _build_profile(corpus_root: Path, profile_path: Path) -> None:
     assert (
         main(
             [
-                "profile-pgdp",
+                "profile",
                 str(corpus_root),
                 "--ranking",
                 str(ranking_path),

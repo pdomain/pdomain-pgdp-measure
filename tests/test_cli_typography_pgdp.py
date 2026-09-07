@@ -6,7 +6,8 @@ import json
 from pathlib import Path
 
 import pytest
-from pdomain_ocr_synth.cli import (
+
+from pdomain_pgdp_measure.cli import (
     _TYPOGRAPHY_EVIDENCE_PAGES_DEFAULT,
     DESTINATION_EXIT,
     USAGE_EXIT,
@@ -14,7 +15,6 @@ from pdomain_ocr_synth.cli import (
     build_parser,
     main,
 )
-
 from pdomain_pgdp_measure.typography_models import DEFAULT_EVIDENCE_PAGES_PER_BOOK
 from tests.test_pgdp_typography import Fixture, build_fixture
 
@@ -27,7 +27,7 @@ def fixture(tmp_path_factory: pytest.TempPathFactory) -> Fixture:
 def _run(fixture: Fixture, output: Path, *extra: str) -> int:
     return main(
         [
-            "typography-pgdp",
+            "typography",
             str(fixture.corpus_root),
             "--alignment",
             str(fixture.alignment_path),
@@ -43,7 +43,7 @@ def _run(fixture: Fixture, output: Path, *extra: str) -> int:
 def test_parser_accepts_the_pinned_interface() -> None:
     args = build_parser().parse_args(
         [
-            "typography-pgdp",
+            "typography",
             "corpus",
             "--alignment",
             "alignment.json",
@@ -56,7 +56,7 @@ def test_parser_accepts_the_pinned_interface() -> None:
         ]
     )
 
-    assert args.command == "typography-pgdp"
+    assert args.command == "typography"
     assert args.corpus_root == "corpus"
     assert args.alignment == "alignment.json"
     assert args.profile == "profile.json"
@@ -67,7 +67,7 @@ def test_parser_accepts_the_pinned_interface() -> None:
 def test_evidence_pages_defaults_to_twelve() -> None:
     args = build_parser().parse_args(
         [
-            "typography-pgdp",
+            "typography",
             "corpus",
             "--alignment",
             "a.json",
@@ -93,7 +93,7 @@ def test_evidence_pages_defaults_to_twelve() -> None:
 )
 def test_parser_requires_every_input(arguments: list[str]) -> None:
     with pytest.raises(SystemExit) as error:
-        _ = build_parser().parse_args(["typography-pgdp", "corpus", *arguments])
+        _ = build_parser().parse_args(["typography", "corpus", *arguments])
 
     assert error.value.code == 2
 
@@ -126,7 +126,7 @@ def test_report_is_written_outside_the_corpus_root(fixture: Fixture) -> None:
 def test_a_missing_corpus_root_is_a_usage_error(fixture: Fixture, tmp_path: Path) -> None:
     result = main(
         [
-            "typography-pgdp",
+            "typography",
             str(tmp_path / "absent"),
             "--alignment",
             str(fixture.alignment_path),
@@ -159,7 +159,7 @@ def test_a_mismatched_profile_is_a_validation_error(
 
     result = main(
         [
-            "typography-pgdp",
+            "typography",
             str(fixture.corpus_root),
             "--alignment",
             str(fixture.alignment_path),
@@ -179,7 +179,7 @@ def test_an_unreadable_alignment_report_is_a_validation_error(
 ) -> None:
     result = main(
         [
-            "typography-pgdp",
+            "typography",
             str(fixture.corpus_root),
             "--alignment",
             str(tmp_path / "absent.json"),
@@ -207,7 +207,7 @@ def test_evidence_pages_bounds_the_emitted_rows(fixture: Fixture, tmp_path: Path
 def test_geometry_defaults_to_absent(fixture: Fixture, tmp_path: Path) -> None:
     parsed = build_parser().parse_args(
         [
-            "typography-pgdp",
+            "typography",
             str(fixture.corpus_root),
             "--alignment",
             str(fixture.alignment_path),

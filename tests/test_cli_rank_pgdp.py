@@ -6,7 +6,8 @@ import json
 from pathlib import Path
 
 import pytest
-from pdomain_ocr_synth.cli import build_parser, main
+
+from pdomain_pgdp_measure.cli import build_parser, main
 
 
 def _write_project(
@@ -42,7 +43,7 @@ def _write_project(
 def test_rank_pgdp_parser_accepts_the_pinned_interface() -> None:
     args = build_parser().parse_args(
         [
-            "rank-pgdp",
+            "rank",
             "corpus",
             "--output",
             "ranking.json",
@@ -53,7 +54,7 @@ def test_rank_pgdp_parser_accepts_the_pinned_interface() -> None:
         ]
     )
 
-    assert args.command == "rank-pgdp"
+    assert args.command == "rank"
     assert args.corpus_root == "corpus"
     assert args.output == "ranking.json"
     assert args.project_limit == 4
@@ -61,7 +62,7 @@ def test_rank_pgdp_parser_accepts_the_pinned_interface() -> None:
 
 
 def test_rank_pgdp_parser_uses_pinned_defaults() -> None:
-    args = build_parser().parse_args(["rank-pgdp", "corpus"])
+    args = build_parser().parse_args(["rank", "corpus"])
 
     assert args.output == "./pgdp-ranking.json"
     assert args.project_limit == 50
@@ -82,7 +83,7 @@ def test_rank_pgdp_writes_a_report_and_prints_summary(
 
     rc = main(
         [
-            "rank-pgdp",
+            "rank",
             str(corpus_root),
             "--output",
             str(output),
@@ -119,7 +120,7 @@ def test_rank_pgdp_rejects_missing_or_non_directory_corpus_root(
     if root_kind == "file":
         corpus_root.write_text("not a directory\n", encoding="utf-8")
 
-    rc = main(["rank-pgdp", str(corpus_root)])
+    rc = main(["rank", str(corpus_root)])
 
     captured = capsys.readouterr()
     assert rc == 2
@@ -140,7 +141,7 @@ def test_rank_pgdp_rejects_nonpositive_limits(
     corpus_root = tmp_path / "corpus"
     corpus_root.mkdir()
 
-    rc = main(["rank-pgdp", str(corpus_root), option, value])
+    rc = main(["rank", str(corpus_root), option, value])
 
     captured = capsys.readouterr()
     assert rc == 2
@@ -154,7 +155,7 @@ def test_rank_pgdp_rejects_output_inside_the_corpus(
     corpus_root = tmp_path / "corpus"
     corpus_root.mkdir()
 
-    rc = main(["rank-pgdp", str(corpus_root), "--output", str(corpus_root / "ranking.json")])
+    rc = main(["rank", str(corpus_root), "--output", str(corpus_root / "ranking.json")])
 
     captured = capsys.readouterr()
     assert rc == 2
@@ -170,7 +171,7 @@ def test_rank_pgdp_rejects_an_existing_non_file_output(
     output = tmp_path / "ranking.json"
     output.mkdir()
 
-    rc = main(["rank-pgdp", str(corpus_root), "--output", str(output)])
+    rc = main(["rank", str(corpus_root), "--output", str(output)])
 
     captured = capsys.readouterr()
     assert rc == 2
@@ -191,7 +192,7 @@ def test_rank_pgdp_writes_a_partial_report_for_malformed_projects(
     )
     output = tmp_path / "ranking.json"
 
-    rc = main(["rank-pgdp", str(corpus_root), "--output", str(output)])
+    rc = main(["rank", str(corpus_root), "--output", str(output)])
 
     assert rc == 0
     report = json.loads(output.read_text(encoding="utf-8"))
