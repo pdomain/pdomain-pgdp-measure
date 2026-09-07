@@ -1,0 +1,155 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "character": {
+      "maxLength": 1,
+      "minLength": 1,
+      "title": "Character",
+      "type": "string"
+    },
+    "label_tier": {
+      "enum": [
+        "transcribed",
+        "recognized"
+      ],
+      "title": "Label Tier",
+      "type": "string"
+    },
+    "page_name": {
+      "minLength": 1,
+      "title": "Page Name",
+      "type": "string"
+    },
+    "line_ordinal": {
+      "minimum": 0,
+      "title": "Line Ordinal",
+      "type": "integer"
+    },
+    "word_ordinal": {
+      "minimum": 0,
+      "title": "Word Ordinal",
+      "type": "integer"
+    },
+    "glyph_ordinal": {
+      "minimum": 0,
+      "title": "Glyph Ordinal",
+      "type": "integer"
+    },
+    "box": {
+      "maxItems": 4,
+      "minItems": 4,
+      "prefixItems": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        }
+      ],
+      "title": "Box",
+      "type": "array"
+    },
+    "ink_density": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Ink Density",
+      "type": "number"
+    },
+    "row_extent_px": {
+      "exclusiveMinimum": 0,
+      "title": "Row Extent Px",
+      "type": "integer"
+    },
+    "top_offset_px": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Top Offset Px"
+    },
+    "bottom_offset_px": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Bottom Offset Px"
+    },
+    "flags": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Flags",
+      "type": "array"
+    },
+    "label_confidence": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Label Confidence"
+    },
+    "label_style": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Label Style"
+    },
+    "source_line_ordinal": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Line Ordinal"
+    }
+  },
+  "required": [
+    "character",
+    "label_tier",
+    "page_name",
+    "line_ordinal",
+    "word_ordinal",
+    "glyph_ordinal",
+    "box",
+    "ink_density",
+    "row_extent_px"
+  ],
+  "title": "GlyphRowInput",
+  "type": "object"
+}

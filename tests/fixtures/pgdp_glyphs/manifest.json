@@ -1,0 +1,214 @@
+{
+  "cases": [
+    {
+      "atlas_path": "atlas/separable-nose.png",
+      "atlas_sha256": "99d2298383773cd35e010bdc704171cec51b810e528b005836c4679443ad2708",
+      "baseline_row_px": 35,
+      "box": [
+        0,
+        0,
+        49,
+        53
+      ],
+      "case_id": "separable-nose",
+      "expected": {
+        "glyphs": [
+          {
+            "box": [
+              12,
+              20,
+              16,
+              35
+            ],
+            "character": "n",
+            "ordinal": 0
+          },
+          {
+            "box": [
+              19,
+              20,
+              23,
+              35
+            ],
+            "character": "o",
+            "ordinal": 1
+          },
+          {
+            "box": [
+              26,
+              20,
+              30,
+              35
+            ],
+            "character": "s",
+            "ordinal": 2
+          },
+          {
+            "box": [
+              33,
+              20,
+              37,
+              35
+            ],
+            "character": "e",
+            "ordinal": 3
+          }
+        ],
+        "position_count": 4,
+        "reason": null,
+        "run_count": 4,
+        "separable": true,
+        "visible_text": "nose"
+      },
+      "fixture_sha256": "a58daa13f40cbf913aa9d0a8eb6cf604705cff5d3f37b50ce95503013515bd98",
+      "image_path": "words/separable-nose.pbm",
+      "page_name": "p002.png",
+      "project_id": "projectID609bfa0449bdf",
+      "provenance": "synthetic_derivative",
+      "review_method": "model-reviewed",
+      "reviewed_on": "2026-09-05",
+      "source_sha256": "ed3513095f6283ecb270797bf67a07c35644f35e1ad78694ebe5071ced776fb3",
+      "stroke_px": 4,
+      "transform": "Self-authored PBM recreating the body geometry measured on projectID609bfa0449bdf/p002.png: 15 px x-height on a 4 px stroke, letters clear of one another by 3 px. It copies no source pixels and no PGDP transcription.",
+      "x_height_px": 15,
+      "x_height_top_row_px": 20
+    },
+    {
+      "atlas_path": null,
+      "atlas_sha256": null,
+      "baseline_row_px": 40,
+      "box": [
+        0,
+        0,
+        66,
+        59
+      ],
+      "case_id": "touching-shall",
+      "expected": {
+        "glyphs": [],
+        "position_count": 5,
+        "reason": "run_count_disagrees",
+        "run_count": 4,
+        "separable": false,
+        "visible_text": "shall"
+      },
+      "fixture_sha256": "f05b874c131d5c62ee064264b9583761db497f87c13c9deb346bb9d623b8789f",
+      "image_path": "words/touching-shall.pbm",
+      "page_name": "p010.png",
+      "project_id": "projectID657550412c8dc",
+      "provenance": "synthetic_derivative",
+      "review_method": "model-reviewed",
+      "reviewed_on": "2026-09-05",
+      "source_sha256": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+      "stroke_px": 6,
+      "transform": "Self-authored PBM recreating the body geometry measured on projectID657550412c8dc/p010.png: 18 px x-height on a 6 px stroke, with one letter pair set solid so their ink joins. It copies no source pixels and no PGDP transcription.",
+      "x_height_px": 18,
+      "x_height_top_row_px": 22
+    },
+    {
+      "atlas_path": null,
+      "atlas_sha256": null,
+      "baseline_row_px": 28,
+      "box": [
+        0,
+        0,
+        57,
+        45
+      ],
+      "case_id": "broken-quiet",
+      "expected": {
+        "glyphs": [],
+        "position_count": 5,
+        "reason": "run_count_disagrees",
+        "run_count": 6,
+        "separable": false,
+        "visible_text": "quiet"
+      },
+      "fixture_sha256": "d35787171065232629b562da9704bfcef7bd074372366f9824c438d93454f811",
+      "image_path": "words/broken-quiet.pbm",
+      "page_name": "p006.png",
+      "project_id": "projectID64a479f51ce5b",
+      "provenance": "synthetic_derivative",
+      "review_method": "model-reviewed",
+      "reviewed_on": "2026-09-05",
+      "source_sha256": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+      "stroke_px": 3,
+      "transform": "Self-authored PBM recreating the reference-work geometry measured on projectID64a479f51ce5b/p006.png: 10 px x-height on a 3 px stroke, with one letter printed broken so its ink makes two runs. It copies no source pixels and no PGDP transcription.",
+      "x_height_px": 10,
+      "x_height_top_row_px": 18
+    },
+    {
+      "atlas_path": "atlas/punctuated-dont.png",
+      "atlas_sha256": "e00373ff988c0a8d3062b7f439820e2c88b8a516ee9e61af8938be529190992a",
+      "baseline_row_px": 35,
+      "box": [
+        0,
+        0,
+        56,
+        53
+      ],
+      "case_id": "punctuated-dont",
+      "expected": {
+        "glyphs": [
+          {
+            "box": [
+              12,
+              12,
+              16,
+              35
+            ],
+            "character": "d",
+            "ordinal": 0
+          },
+          {
+            "box": [
+              19,
+              20,
+              23,
+              35
+            ],
+            "character": "o",
+            "ordinal": 1
+          },
+          {
+            "box": [
+              26,
+              20,
+              30,
+              35
+            ],
+            "character": "n",
+            "ordinal": 2
+          },
+          {
+            "box": [
+              40,
+              12,
+              44,
+              35
+            ],
+            "character": "t",
+            "ordinal": 4
+          }
+        ],
+        "position_count": 5,
+        "reason": null,
+        "run_count": 5,
+        "separable": true,
+        "visible_text": "don\u2019t"
+      },
+      "fixture_sha256": "bc0d6d8d7b405feaa1005061eff1fe0af5b0ab32a37d38244a0394d208940cb1",
+      "image_path": "words/punctuated-dont.pbm",
+      "page_name": "p014.png",
+      "project_id": "projectID609bfa0449bdf",
+      "provenance": "synthetic_derivative",
+      "review_method": "model-reviewed",
+      "reviewed_on": "2026-09-05",
+      "source_sha256": "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+      "stroke_px": 4,
+      "transform": "Self-authored PBM recreating the body geometry measured on projectID609bfa0449bdf/p014.png: 15 px x-height on a 4 px stroke, with an apostrophe standing clear of the letters on either side. It copies no source pixels and no PGDP transcription.",
+      "x_height_px": 15,
+      "x_height_top_row_px": 20
+    }
+  ]
+}

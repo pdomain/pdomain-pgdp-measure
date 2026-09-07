@@ -1,0 +1,862 @@
+{
+  "$defs": {
+    "BookTypographyInput": {
+      "additionalProperties": true,
+      "properties": {
+        "project_id": {
+          "minLength": 1,
+          "title": "Project Id",
+          "type": "string"
+        },
+        "accepted_page_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Accepted Page Count",
+          "type": "integer"
+        },
+        "measured_page_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Measured Page Count",
+          "type": "integer"
+        },
+        "excluded_page_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Excluded Page Count",
+          "type": "integer"
+        },
+        "unknown_class_page_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Unknown Class Page Count",
+          "type": "integer"
+        },
+        "matched_line_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Matched Line Count",
+          "type": "integer"
+        },
+        "measured_line_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Measured Line Count",
+          "type": "integer"
+        },
+        "reconciled_line_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Reconciled Line Count",
+          "type": "integer"
+        },
+        "estimates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EstimateWire"
+          },
+          "title": "Estimates",
+          "type": "array"
+        },
+        "styles": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/StyleTypographyInput"
+          },
+          "title": "Styles",
+          "type": "array"
+        },
+        "pages": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/PageTypographyInput"
+          },
+          "title": "Pages",
+          "type": "array"
+        },
+        "skew_slope_median": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Skew Slope Median"
+        },
+        "skew_slope_mad": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Skew Slope Mad"
+        },
+        "exclusions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclusions",
+          "type": "array"
+        },
+        "diagnostics": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ProfileDiagnosticWire"
+          },
+          "title": "Diagnostics",
+          "type": "array"
+        }
+      },
+      "required": [
+        "project_id"
+      ],
+      "title": "BookTypographyInput",
+      "type": "object"
+    },
+    "CoordinateFrameWire": {
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "const": "source",
+          "default": "source",
+          "title": "Name",
+          "type": "string"
+        },
+        "width": {
+          "minimum": 0,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "minimum": 0,
+          "title": "Height",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "width",
+        "height"
+      ],
+      "title": "CoordinateFrameWire",
+      "type": "object"
+    },
+    "EstimateWire": {
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        },
+        "truth_class": {
+          "enum": [
+            "observed",
+            "derived",
+            "pooled"
+          ],
+          "title": "Truth Class",
+          "type": "string"
+        },
+        "frame": {
+          "const": "source",
+          "default": "source",
+          "title": "Frame",
+          "type": "string"
+        },
+        "method": {
+          "minLength": 1,
+          "title": "Method",
+          "type": "string"
+        },
+        "sample_count": {
+          "minimum": 0,
+          "title": "Sample Count",
+          "type": "integer"
+        },
+        "evidence_pages": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Pages",
+          "type": "array"
+        },
+        "exclusions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclusions",
+          "type": "array"
+        },
+        "confidence": {
+          "title": "Confidence",
+          "type": "null"
+        },
+        "confidence_kind": {
+          "const": "uncalibrated",
+          "title": "Confidence Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "unit",
+        "truth_class",
+        "method",
+        "sample_count",
+        "confidence",
+        "confidence_kind"
+      ],
+      "title": "EstimateWire",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "LineTypographyInput": {
+      "additionalProperties": true,
+      "properties": {
+        "candidate_ordinal": {
+          "minimum": 0,
+          "title": "Candidate Ordinal",
+          "type": "integer"
+        },
+        "source_ordinal": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Ordinal"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "line_ink_width_px": {
+          "minimum": 0,
+          "title": "Line Ink Width Px",
+          "type": "integer"
+        },
+        "line_ink_height_px": {
+          "minimum": 0,
+          "title": "Line Ink Height Px",
+          "type": "integer"
+        },
+        "line_indent_px": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Line Indent Px"
+        },
+        "baseline_row_px": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Baseline Row Px"
+        },
+        "x_height_top_row_px": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "X Height Top Row Px"
+        },
+        "x_height_px": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "X Height Px"
+        },
+        "ascender_extent_px": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ascender Extent Px"
+        },
+        "descender_extent_px": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Descender Extent Px"
+        },
+        "stroke_width_px": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stroke Width Px"
+        },
+        "skew_slope": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Skew Slope"
+        },
+        "segment_count": {
+          "minimum": 0,
+          "title": "Segment Count",
+          "type": "integer"
+        },
+        "word_run_count": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Word Run Count"
+        },
+        "source_word_count": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Word Count"
+        },
+        "words_reconciled": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Words Reconciled"
+        },
+        "words": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/WordTypographyInput"
+          },
+          "title": "Words",
+          "type": "array"
+        },
+        "exclusions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclusions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "candidate_ordinal",
+        "box",
+        "line_ink_width_px",
+        "line_ink_height_px",
+        "segment_count"
+      ],
+      "title": "LineTypographyInput",
+      "type": "object"
+    },
+    "PageTypographyInput": {
+      "additionalProperties": true,
+      "properties": {
+        "page_name": {
+          "minLength": 1,
+          "title": "Page Name",
+          "type": "string"
+        },
+        "page_class": {
+          "minLength": 1,
+          "title": "Page Class",
+          "type": "string"
+        },
+        "scan_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scan Sha256"
+        },
+        "source_frame": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CoordinateFrameWire"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "matched_line_count": {
+          "minimum": 0,
+          "title": "Matched Line Count",
+          "type": "integer"
+        },
+        "measured_line_count": {
+          "minimum": 0,
+          "title": "Measured Line Count",
+          "type": "integer"
+        },
+        "excluded_line_count": {
+          "minimum": 0,
+          "title": "Excluded Line Count",
+          "type": "integer"
+        },
+        "reconciled_line_count": {
+          "minimum": 0,
+          "title": "Reconciled Line Count",
+          "type": "integer"
+        },
+        "baseline_pitch_count": {
+          "minimum": 0,
+          "title": "Baseline Pitch Count",
+          "type": "integer"
+        },
+        "evidence_sampled": {
+          "default": false,
+          "title": "Evidence Sampled",
+          "type": "boolean"
+        },
+        "lines": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/LineTypographyInput"
+          },
+          "title": "Lines",
+          "type": "array"
+        },
+        "estimates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EstimateWire"
+          },
+          "title": "Estimates",
+          "type": "array"
+        },
+        "skew_slope_median": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Skew Slope Median"
+        },
+        "skew_slope_mad": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Skew Slope Mad"
+        },
+        "exclusions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclusions",
+          "type": "array"
+        },
+        "exclusion_evidence": {
+          "default": [],
+          "items": {
+            "additionalProperties": {
+              "$ref": "#/$defs/JsonValue"
+            },
+            "type": "object"
+          },
+          "title": "Exclusion Evidence",
+          "type": "array"
+        },
+        "diagnostics": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ProfileDiagnosticWire"
+          },
+          "title": "Diagnostics",
+          "type": "array"
+        }
+      },
+      "required": [
+        "page_name",
+        "page_class",
+        "matched_line_count",
+        "measured_line_count",
+        "excluded_line_count",
+        "reconciled_line_count",
+        "baseline_pitch_count"
+      ],
+      "title": "PageTypographyInput",
+      "type": "object"
+    },
+    "ProfileDiagnosticWire": {
+      "additionalProperties": true,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "project_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Project Id"
+        },
+        "page_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Name"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ProfileDiagnosticWire",
+      "type": "object"
+    },
+    "StyleTypographyInput": {
+      "additionalProperties": true,
+      "properties": {
+        "style": {
+          "enum": [
+            "body",
+            "chapter_opening"
+          ],
+          "title": "Style",
+          "type": "string"
+        },
+        "page_classes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Page Classes",
+          "type": "array"
+        },
+        "page_count": {
+          "minimum": 0,
+          "title": "Page Count",
+          "type": "integer"
+        },
+        "line_count": {
+          "minimum": 0,
+          "title": "Line Count",
+          "type": "integer"
+        },
+        "estimates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EstimateWire"
+          },
+          "title": "Estimates",
+          "type": "array"
+        },
+        "skew_slope_median": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Skew Slope Median"
+        },
+        "skew_slope_mad": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Skew Slope Mad"
+        }
+      },
+      "required": [
+        "style",
+        "page_classes",
+        "page_count",
+        "line_count"
+      ],
+      "title": "StyleTypographyInput",
+      "type": "object"
+    },
+    "WordTypographyInput": {
+      "additionalProperties": true,
+      "properties": {
+        "ordinal": {
+          "minimum": 0,
+          "title": "Ordinal",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "following_gap_px": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Following Gap Px"
+        }
+      },
+      "required": [
+        "ordinal",
+        "box"
+      ],
+      "title": "WordTypographyInput",
+      "type": "object"
+    }
+  },
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "algorithm_version": {
+      "const": "pgdp-typography/v1",
+      "title": "Algorithm Version",
+      "type": "string"
+    },
+    "tool_version": {
+      "minLength": 1,
+      "title": "Tool Version",
+      "type": "string"
+    },
+    "alignment_label": {
+      "minLength": 1,
+      "pattern": "^[^/\\\\]+$",
+      "title": "Alignment Label",
+      "type": "string"
+    },
+    "alignment_sha256": {
+      "title": "Alignment Sha256",
+      "type": "string"
+    },
+    "profile_label": {
+      "minLength": 1,
+      "pattern": "^[^/\\\\]+$",
+      "title": "Profile Label",
+      "type": "string"
+    },
+    "profile_sha256": {
+      "title": "Profile Sha256",
+      "type": "string"
+    },
+    "methods": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Methods",
+      "type": "object"
+    },
+    "thresholds": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Thresholds",
+      "type": "object"
+    },
+    "evidence_pages_per_book": {
+      "default": 12,
+      "minimum": 0,
+      "title": "Evidence Pages Per Book",
+      "type": "integer"
+    },
+    "books": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/BookTypographyInput"
+      },
+      "title": "Books",
+      "type": "array"
+    },
+    "diagnostics": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ProfileDiagnosticWire"
+      },
+      "title": "Diagnostics",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "algorithm_version",
+    "tool_version",
+    "alignment_label",
+    "alignment_sha256",
+    "profile_label",
+    "profile_sha256",
+    "methods",
+    "thresholds"
+  ],
+  "title": "TypographyReportInput",
+  "type": "object"
+}

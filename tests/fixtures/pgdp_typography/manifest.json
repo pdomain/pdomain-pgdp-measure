@@ -1,0 +1,254 @@
+{
+  "cases": [
+    {
+      "box": [
+        12,
+        12,
+        776,
+        47
+      ],
+      "case_id": "alpha-body",
+      "expected": {
+        "baseline_row_px": 37,
+        "measured": true,
+        "skew_slope": 0.0,
+        "source_word_count": 9,
+        "stroke_width_px": 4,
+        "word_run_count": 9,
+        "words_reconciled": true,
+        "x_height_px": 15,
+        "x_height_top_row_px": 22
+      },
+      "fixture_sha256": "95ba63ab5d9d2f67ad84c6a2aba863cce543a4192bebc6d02ba9b84923a48080",
+      "gap_threshold_px": 10,
+      "image_path": "lines/alpha-body.pbm",
+      "page_name": "p002.png",
+      "project_id": "projectID609bfa0449bdf",
+      "provenance": "synthetic_derivative",
+      "review_method": "model-reviewed",
+      "reviewed_on": "2026-09-04",
+      "source_sha256": "ed3513095f6283ecb270797bf67a07c35644f35e1ad78694ebe5071ced776fb3",
+      "transform": "Self-authored PBM recreates the body line geometry measured on projectID609bfa0449bdf/p002.png: x-height 15 px, stroke 4 px, drawn 764 px wide. It copies no source pixels and no PGDP transcription.",
+      "visible_text": "w0 w1 w2 w3 w4 w5 w6 w7 w8"
+    },
+    {
+      "box": [
+        12,
+        12,
+        432,
+        47
+      ],
+      "case_id": "alpha-short",
+      "expected": {
+        "baseline_row_px": 37,
+        "measured": false,
+        "skew_slope": 0.0,
+        "source_word_count": 5,
+        "stroke_width_px": 4,
+        "word_run_count": 5,
+        "words_reconciled": true,
+        "x_height_px": 15,
+        "x_height_top_row_px": 22
+      },
+      "fixture_sha256": "86b7b4b4ccc90c4eff767ab514df25835046d82878042d3b5e4a388ef7c94ab5",
+      "gap_threshold_px": 10,
+      "image_path": "lines/alpha-short.pbm",
+      "page_name": "p004.png",
+      "project_id": "projectID609bfa0449bdf",
+      "provenance": "synthetic_derivative",
+      "review_method": "model-reviewed",
+      "reviewed_on": "2026-09-04",
+      "source_sha256": "a2c46948b83aa23f599a1d975287a5f4a7f9bf20224d1f2d4bc0eb281b552577",
+      "transform": "Self-authored PBM recreates the paragraph-final line below the three-segment floor geometry measured on projectID609bfa0449bdf/p004.png: x-height 15 px, stroke 4 px, drawn 420 px wide. It copies no source pixels and no PGDP transcription.",
+      "visible_text": "w0 w1 w2 w3 w4"
+    },
+    {
+      "box": [
+        12,
+        12,
+        894,
+        38
+      ],
+      "case_id": "beta-small",
+      "expected": {
+        "baseline_row_px": 30,
+        "measured": true,
+        "skew_slope": 0.0,
+        "source_word_count": 12,
+        "stroke_width_px": 3,
+        "word_run_count": 12,
+        "words_reconciled": true,
+        "x_height_px": 10,
+        "x_height_top_row_px": 20
+      },
+      "fixture_sha256": "11abddbd2fe985937112fbeb02e5c22d5aa657f1f0efb8024209ca1f83194443",
+      "gap_threshold_px": 6,
+      "image_path": "lines/beta-small.pbm",
+      "page_name": "f005.png",
+      "project_id": "projectID64a479f51ce5b",
+      "provenance": "synthetic_derivative",
+      "review_method": "model-reviewed",
+      "reviewed_on": "2026-09-04",
+      "source_sha256": "4d9c24bc59270563e908e10e0c62204b58c2108962b25dcb3ac8b6e5fd3df64a",
+      "transform": "Self-authored PBM recreates the small body type geometry measured on projectID64a479f51ce5b/f005.png: x-height 10 px, stroke 3 px, drawn 882 px wide. It copies no source pixels and no PGDP transcription.",
+      "visible_text": "w0 w1 w2 w3 w4 w5 w6 w7 w8 w9 w10 w11"
+    },
+    {
+      "box": [
+        12,
+        12,
+        894,
+        46
+      ],
+      "case_id": "beta-skewed",
+      "expected": {
+        "baseline_row_px": 34,
+        "measured": true,
+        "skew_slope": 0.008727,
+        "source_word_count": 12,
+        "stroke_width_px": 3,
+        "word_run_count": 12,
+        "words_reconciled": true,
+        "x_height_px": 10,
+        "x_height_top_row_px": 24
+      },
+      "fixture_sha256": "93e7ff333d2a75e2dfde7452b54ca2425b88c9e0b379570e8c3da52f43a09ac8",
+      "gap_threshold_px": 6,
+      "image_path": "lines/beta-skewed.pbm",
+      "page_name": "f007.png",
+      "project_id": "projectID64a479f51ce5b",
+      "provenance": "synthetic_derivative",
+      "review_method": "model-reviewed",
+      "reviewed_on": "2026-09-04",
+      "source_sha256": "58843a57c01f9f785a41ac3685fd94a5ecb1fcec48ba96cae85b14ab9ea505d8",
+      "transform": "Self-authored PBM recreates the small body type on a half-degree skew geometry measured on projectID64a479f51ce5b/f007.png: x-height 10 px, stroke 3 px, drawn 882 px wide. It copies no source pixels and no PGDP transcription.",
+      "visible_text": "w0 w1 w2 w3 w4 w5 w6 w7 w8 w9 w10 w11"
+    },
+    {
+      "box": [
+        12,
+        12,
+        910,
+        54
+      ],
+      "case_id": "gamma-heavy",
+      "expected": {
+        "baseline_row_px": 42,
+        "measured": true,
+        "skew_slope": 0.0,
+        "source_word_count": 7,
+        "stroke_width_px": 6,
+        "word_run_count": 7,
+        "words_reconciled": true,
+        "x_height_px": 17,
+        "x_height_top_row_px": 25
+      },
+      "fixture_sha256": "55a3ad0ee44130df9b480747c9bd2a7c9efbb5f0d36c3c0969f6e65f60aae2db",
+      "gap_threshold_px": 8,
+      "image_path": "lines/gamma-heavy.pbm",
+      "page_name": "053.png",
+      "project_id": "projectID603d7d5e04ca0",
+      "provenance": "synthetic_derivative",
+      "review_method": "model-reviewed",
+      "reviewed_on": "2026-09-04",
+      "source_sha256": "83a16435f41b610917545c92e942f56e7f0e62057c092becd087661232573712",
+      "transform": "Self-authored PBM recreates the heavy inked body line geometry measured on projectID603d7d5e04ca0/053.png: x-height 17 px, stroke 6 px, drawn 898 px wide. It copies no source pixels and no PGDP transcription.",
+      "visible_text": "w0 w1 w2 w3 w4 w5 w6"
+    },
+    {
+      "box": [
+        12,
+        12,
+        882,
+        54
+      ],
+      "case_id": "gamma-oversplit",
+      "expected": {
+        "baseline_row_px": 42,
+        "measured": true,
+        "skew_slope": 0.0,
+        "source_word_count": 7,
+        "stroke_width_px": 6,
+        "word_run_count": 9,
+        "words_reconciled": false,
+        "x_height_px": 17,
+        "x_height_top_row_px": 25
+      },
+      "fixture_sha256": "c9438eb7f0e733af1961105105f2c66700fa605084151f07a914b91abf7ead90",
+      "gap_threshold_px": 8,
+      "image_path": "lines/gamma-oversplit.pbm",
+      "page_name": "054.png",
+      "project_id": "projectID603d7d5e04ca0",
+      "provenance": "synthetic_derivative",
+      "review_method": "model-reviewed",
+      "reviewed_on": "2026-09-04",
+      "source_sha256": "34faec0530dbcfa8cff214ccc134a42b3e6e94286042bb93a9574f96814343ba",
+      "transform": "Self-authored PBM recreates the ink runs outnumber the transcription's words geometry measured on projectID603d7d5e04ca0/054.png: x-height 17 px, stroke 6 px, drawn 870 px wide. It copies no source pixels and no PGDP transcription.",
+      "visible_text": "w0 w1 w2 w3 w4 w5 w6"
+    },
+    {
+      "box": [
+        12,
+        12,
+        856,
+        53
+      ],
+      "case_id": "delta-wide-gaps",
+      "expected": {
+        "baseline_row_px": 42,
+        "measured": true,
+        "skew_slope": 0.0,
+        "source_word_count": 8,
+        "stroke_width_px": 4,
+        "word_run_count": 8,
+        "words_reconciled": true,
+        "x_height_px": 18,
+        "x_height_top_row_px": 24
+      },
+      "fixture_sha256": "033c9df0cbf6ebc96cb08de858ab90296bd4f90387c28c19b63d3ea1be80a61a",
+      "gap_threshold_px": 15,
+      "image_path": "lines/delta-wide-gaps.pbm",
+      "page_name": "p0400.png",
+      "project_id": "projectID657550412c8dc",
+      "provenance": "synthetic_derivative",
+      "review_method": "model-reviewed",
+      "reviewed_on": "2026-09-04",
+      "source_sha256": "3f59c3d505b7b41b41f8858da482749277587d878b4bf5dfde26683f4bc9fdad",
+      "transform": "Self-authored PBM recreates the widely spaced setting geometry measured on projectID657550412c8dc/p0400.png: x-height 18 px, stroke 4 px, drawn 844 px wide. It copies no source pixels and no PGDP transcription.",
+      "visible_text": "w0 w1 w2 w3 w4 w5 w6 w7"
+    },
+    {
+      "box": [
+        12,
+        12,
+        856,
+        83
+      ],
+      "case_id": "delta-skew-backstop",
+      "expected": {
+        "baseline_row_px": 57,
+        "measured": false,
+        "skew_slope": 0.034921,
+        "source_word_count": 8,
+        "stroke_width_px": 4,
+        "word_run_count": 8,
+        "words_reconciled": true,
+        "x_height_px": 18,
+        "x_height_top_row_px": 39
+      },
+      "fixture_sha256": "d5eacda8f16228c2e2822ddbac3cad10c52856a258b991cbc420423349e52284",
+      "gap_threshold_px": 15,
+      "image_path": "lines/delta-skew-backstop.pbm",
+      "page_name": "p0420.png",
+      "project_id": "projectID657550412c8dc",
+      "provenance": "synthetic_derivative",
+      "review_method": "model-reviewed",
+      "reviewed_on": "2026-09-04",
+      "source_sha256": "4cabe084649a15928946396f2911a5ba2966edcdf6f965f88d2e83bf280b899e",
+      "transform": "Self-authored PBM recreates the past the skew backstop geometry measured on projectID657550412c8dc/p0420.png: x-height 18 px, stroke 4 px, drawn 844 px wide. It copies no source pixels and no PGDP transcription.",
+      "visible_text": "w0 w1 w2 w3 w4 w5 w6 w7"
+    }
+  ],
+  "licence_rule": "Real scan crops may be committed only where the source licence permits. None are: every case here is a byte-stable synthetic derivative, recorded as provenance 'synthetic_derivative', and its fixture_sha256 differs from the source_sha256 of the real page whose geometry it recreates.",
+  "schema_version": 1
+}

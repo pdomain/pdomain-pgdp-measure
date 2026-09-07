@@ -1,0 +1,876 @@
+{
+  "$defs": {
+    "AlignmentDiagnosticInput": {
+      "additionalProperties": true,
+      "properties": {
+        "code": {
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "project_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Project Id"
+        },
+        "page_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Name"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "AlignmentDiagnosticInput",
+      "type": "object"
+    },
+    "AlignmentOperationInput": {
+      "additionalProperties": true,
+      "properties": {
+        "kind": {
+          "enum": [
+            "match",
+            "skip_image",
+            "skip_text"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "source_ordinal": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Ordinal"
+        },
+        "candidate_ordinal": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Candidate Ordinal"
+        },
+        "cost": {
+          "minimum": 0,
+          "title": "Cost",
+          "type": "number"
+        },
+        "width_cost": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Width Cost"
+        },
+        "indentation_cost": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Indentation Cost"
+        },
+        "gaps_cost": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gaps Cost"
+        },
+        "style_cost": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Style Cost"
+        }
+      },
+      "required": [
+        "kind",
+        "cost"
+      ],
+      "title": "AlignmentOperationInput",
+      "type": "object"
+    },
+    "CoordinateFrameInput": {
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "const": "source",
+          "default": "source",
+          "title": "Name",
+          "type": "string"
+        },
+        "width": {
+          "minimum": 0,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "minimum": 0,
+          "title": "Height",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "width",
+        "height"
+      ],
+      "title": "CoordinateFrameInput",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "PageAlignmentInput": {
+      "additionalProperties": true,
+      "oneOf": [
+        {
+          "properties": {
+            "f2_sha256": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "f2_sha256"
+          ],
+          "title": "Available F2 source"
+        },
+        {
+          "properties": {
+            "f2_sha256": {
+              "type": "null"
+            },
+            "state": {
+              "const": "excluded"
+            },
+            "exclusions": {
+              "contains": {
+                "const": "f2_missing"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "f2_sha256",
+            "state",
+            "exclusions"
+          ],
+          "title": "Unavailable F2 source"
+        }
+      ],
+      "properties": {
+        "page_name": {
+          "minLength": 1,
+          "title": "Page Name",
+          "type": "string"
+        },
+        "f2_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "F2 Sha256"
+        },
+        "scan_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scan Sha256"
+        },
+        "source_frame": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CoordinateFrameInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_lines": {
+          "items": {
+            "$ref": "#/$defs/WireSourceLineInput"
+          },
+          "title": "Source Lines",
+          "type": "array"
+        },
+        "formatting_spans": {
+          "items": {
+            "$ref": "#/$defs/WireFormattingSpanInput"
+          },
+          "title": "Formatting Spans",
+          "type": "array"
+        },
+        "style_runs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/WireStyleRunInput"
+          },
+          "title": "Style Runs",
+          "type": "array"
+        },
+        "candidates": {
+          "items": {
+            "$ref": "#/$defs/WireLineCandidateInput"
+          },
+          "title": "Candidates",
+          "type": "array"
+        },
+        "operations": {
+          "items": {
+            "$ref": "#/$defs/AlignmentOperationInput"
+          },
+          "title": "Operations",
+          "type": "array"
+        },
+        "total_cost": {
+          "minimum": 0,
+          "title": "Total Cost",
+          "type": "number"
+        },
+        "second_best_cost": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Second Best Cost"
+        },
+        "normalized_cost": {
+          "minimum": 0,
+          "title": "Normalized Cost",
+          "type": "number"
+        },
+        "matched_count": {
+          "minimum": 0,
+          "title": "Matched Count",
+          "type": "integer"
+        },
+        "matched_ratio": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Matched Ratio",
+          "type": "number"
+        },
+        "uniqueness_margin": {
+          "minimum": 0,
+          "title": "Uniqueness Margin",
+          "type": "number"
+        },
+        "mean_width_residual": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean Width Residual"
+        },
+        "mean_indentation_residual": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean Indentation Residual"
+        },
+        "state": {
+          "enum": [
+            "accepted",
+            "proposed",
+            "excluded"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "accepted": {
+          "title": "Accepted",
+          "type": "boolean"
+        },
+        "exclusions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclusions",
+          "type": "array"
+        },
+        "exclusion_evidence": {
+          "default": [],
+          "items": {
+            "additionalProperties": {
+              "$ref": "#/$defs/JsonValue"
+            },
+            "type": "object"
+          },
+          "title": "Exclusion Evidence",
+          "type": "array"
+        },
+        "diagnostics": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/AlignmentDiagnosticInput"
+          },
+          "title": "Diagnostics",
+          "type": "array"
+        },
+        "confidence": {
+          "title": "Confidence",
+          "type": "null"
+        },
+        "confidence_kind": {
+          "const": "uncalibrated",
+          "title": "Confidence Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "page_name",
+        "f2_sha256",
+        "source_lines",
+        "formatting_spans",
+        "candidates",
+        "operations",
+        "total_cost",
+        "normalized_cost",
+        "matched_count",
+        "matched_ratio",
+        "uniqueness_margin",
+        "state",
+        "accepted",
+        "exclusions",
+        "confidence",
+        "confidence_kind"
+      ],
+      "title": "PageAlignmentInput",
+      "type": "object"
+    },
+    "ProjectAlignmentInput": {
+      "additionalProperties": true,
+      "properties": {
+        "project_id": {
+          "minLength": 1,
+          "title": "Project Id",
+          "type": "string"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Title"
+        },
+        "author": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Author"
+        },
+        "genre": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Genre"
+        },
+        "pages": {
+          "items": {
+            "$ref": "#/$defs/PageAlignmentInput"
+          },
+          "title": "Pages",
+          "type": "array"
+        },
+        "exclusions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclusions",
+          "type": "array"
+        },
+        "diagnostics": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/AlignmentDiagnosticInput"
+          },
+          "title": "Diagnostics",
+          "type": "array"
+        }
+      },
+      "required": [
+        "project_id",
+        "pages"
+      ],
+      "title": "ProjectAlignmentInput",
+      "type": "object"
+    },
+    "WireFormattingSpanInput": {
+      "additionalProperties": true,
+      "properties": {
+        "opening_id": {
+          "minLength": 1,
+          "title": "Opening Id",
+          "type": "string"
+        },
+        "block_id": {
+          "minLength": 1,
+          "title": "Block Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "local",
+            "continued"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "page_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Name"
+        },
+        "byte_start": {
+          "minimum": 0,
+          "title": "Byte Start",
+          "type": "integer"
+        },
+        "byte_end": {
+          "minimum": 0,
+          "title": "Byte End",
+          "type": "integer"
+        },
+        "closed": {
+          "title": "Closed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "opening_id",
+        "block_id",
+        "kind",
+        "byte_start",
+        "byte_end",
+        "closed"
+      ],
+      "title": "WireFormattingSpanInput",
+      "type": "object"
+    },
+    "WireLineCandidateInput": {
+      "additionalProperties": true,
+      "properties": {
+        "ordinal": {
+          "minimum": 0,
+          "title": "Ordinal",
+          "type": "integer"
+        },
+        "band_ordinal": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Band Ordinal"
+        },
+        "component_ordinal": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Component Ordinal"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "component_count": {
+          "minimum": 0,
+          "title": "Component Count",
+          "type": "integer"
+        },
+        "foreground_pixels": {
+          "minimum": 0,
+          "title": "Foreground Pixels",
+          "type": "integer"
+        },
+        "width": {
+          "minimum": 0,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "minimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "fill_ratio": {
+          "title": "Fill Ratio",
+          "type": "number"
+        },
+        "horizontal_ink_profile": {
+          "default": [],
+          "items": {
+            "type": "number"
+          },
+          "title": "Horizontal Ink Profile",
+          "type": "array"
+        }
+      },
+      "required": [
+        "ordinal",
+        "box",
+        "component_count",
+        "foreground_pixels",
+        "width",
+        "height",
+        "fill_ratio"
+      ],
+      "title": "WireLineCandidateInput",
+      "type": "object"
+    },
+    "WireSourceLineInput": {
+      "additionalProperties": true,
+      "properties": {
+        "ordinal": {
+          "minimum": 0,
+          "title": "Ordinal",
+          "type": "integer"
+        },
+        "byte_start": {
+          "minimum": 0,
+          "title": "Byte Start",
+          "type": "integer"
+        },
+        "byte_end": {
+          "minimum": 0,
+          "title": "Byte End",
+          "type": "integer"
+        },
+        "content_byte_start": {
+          "minimum": 0,
+          "title": "Content Byte Start",
+          "type": "integer"
+        },
+        "content_byte_end": {
+          "minimum": 0,
+          "title": "Content Byte End",
+          "type": "integer"
+        },
+        "separator_byte_start": {
+          "minimum": 0,
+          "title": "Separator Byte Start",
+          "type": "integer"
+        },
+        "separator_byte_end": {
+          "minimum": 0,
+          "title": "Separator Byte End",
+          "type": "integer"
+        },
+        "original_text": {
+          "title": "Original Text",
+          "type": "string"
+        },
+        "separator_text": {
+          "title": "Separator Text",
+          "type": "string"
+        },
+        "visible_text": {
+          "title": "Visible Text",
+          "type": "string"
+        },
+        "matching_eligible": {
+          "title": "Matching Eligible",
+          "type": "boolean"
+        },
+        "style_fitting_eligible": {
+          "title": "Style Fitting Eligible",
+          "type": "boolean"
+        },
+        "operation_ordinals": {
+          "default": [],
+          "items": {
+            "type": "integer"
+          },
+          "title": "Operation Ordinals",
+          "type": "array"
+        },
+        "formatting_span_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Formatting Span Ids",
+          "type": "array"
+        },
+        "continued_block_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Continued Block Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "ordinal",
+        "byte_start",
+        "byte_end",
+        "content_byte_start",
+        "content_byte_end",
+        "separator_byte_start",
+        "separator_byte_end",
+        "original_text",
+        "separator_text",
+        "visible_text",
+        "matching_eligible",
+        "style_fitting_eligible"
+      ],
+      "title": "WireSourceLineInput",
+      "type": "object"
+    },
+    "WireStyleRunInput": {
+      "additionalProperties": true,
+      "properties": {
+        "kind": {
+          "enum": [
+            "i",
+            "b",
+            "sc",
+            "f",
+            "g",
+            "tb"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "normalized_start": {
+          "minimum": 0,
+          "title": "Normalized Start",
+          "type": "integer"
+        },
+        "normalized_end": {
+          "minimum": 0,
+          "title": "Normalized End",
+          "type": "integer"
+        },
+        "byte_start": {
+          "minimum": 0,
+          "title": "Byte Start",
+          "type": "integer"
+        },
+        "byte_end": {
+          "minimum": 0,
+          "title": "Byte End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "kind",
+        "normalized_start",
+        "normalized_end",
+        "byte_start",
+        "byte_end"
+      ],
+      "title": "WireStyleRunInput",
+      "type": "object"
+    }
+  },
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "algorithm_version": {
+      "const": "pgdp-alignment/v3",
+      "title": "Algorithm Version",
+      "type": "string"
+    },
+    "tool_version": {
+      "minLength": 1,
+      "title": "Tool Version",
+      "type": "string"
+    },
+    "profile_label": {
+      "minLength": 1,
+      "pattern": "^[^/\\\\]+$",
+      "title": "Profile Label",
+      "type": "string"
+    },
+    "profile_sha256": {
+      "title": "Profile Sha256",
+      "type": "string"
+    },
+    "methods": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Methods",
+      "type": "object"
+    },
+    "thresholds": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Thresholds",
+      "type": "object"
+    },
+    "projects": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ProjectAlignmentInput"
+      },
+      "title": "Projects",
+      "type": "array"
+    },
+    "diagnostics": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/AlignmentDiagnosticInput"
+      },
+      "title": "Diagnostics",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "algorithm_version",
+    "tool_version",
+    "profile_label",
+    "profile_sha256",
+    "methods",
+    "thresholds"
+  ],
+  "title": "AlignmentReportInput",
+  "type": "object"
+}

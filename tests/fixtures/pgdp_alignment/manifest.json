@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "case_id": "alpha-prose",
+      "project_id": "projectID609bfa0449bdf",
+      "page_name": "p179.png",
+      "f2_text": "The quiet lane continued toward the village under a pale and cloudless sky.\nEvery window held a small reflection of the river beyond the hill.\nA cart passed slowly while the morning bell marked another hour.\nThe old stone bridge carried us across the water without a sound.\nBy noon the road was warm beneath our feet.",
+      "image_path": "accepted/alpha-prose.pbm",
+      "source_sha256": "b183d50514bd235d964711210d56ec3f0f14688e4fb210b7ad54c602d248ba55",
+      "fixture_sha256": "7b1376a92311a3d1f906777b87bed1229f5667a23fee42f0bd58840beac89328",
+      "transform": "Self-authored PBM recreates the compact single-column prose-row geometry observed in projectID609bfa0449bdf/p179.png; it copies no source pixels or F2 text.",
+      "foreground_bounds": [20, 20, 100, 105],
+      "expected_candidates": [[20, 20, 100, 25], [20, 40, 96, 45], [20, 60, 98, 65], [20, 80, 100, 85], [20, 100, 92, 105]],
+      "reviewed_on": "2026-08-24",
+      "accepted": true,
+      "exclusions": [],
+      "operations": [
+        {"kind": "match", "source_ordinal": 0, "candidate_ordinal": 0, "cost": 0.0},
+        {"kind": "match", "source_ordinal": 1, "candidate_ordinal": 1, "cost": 0.18849999999999997},
+        {"kind": "match", "source_ordinal": 2, "candidate_ordinal": 2, "cost": 0.21691666666666662},
+        {"kind": "match", "source_ordinal": 3, "candidate_ordinal": 3, "cost": 0.22333333333333333},
+        {"kind": "match", "source_ordinal": 4, "candidate_ordinal": 4, "cost": 0.32966666666666666}
+      ]
+    },
+    {
+      "case_id": "beta-indented",
+      "project_id": "projectID603d7d5e04ca0",
+      "page_name": "161.png",
+      "f2_text": "The meeting began before the lamps had been lighted in the hall.\n    A patient clerk read the first letter aloud to the company.\n    Each answer was entered carefully in the margin of the book.\nThe chair then asked whether any further witness wished to speak.\nNo one moved until the rain had ceased against the windows.\n                                        Margin note.",
+      "image_path": "accepted/beta-indented.pbm",
+      "source_sha256": "cbe0c7385a8ec3b2a81373ba023ebc9e237791c5f1697fc3bbf67d10bc4a7735",
+      "fixture_sha256": "7640eb0c4e950192e1573e4514778b5da27c24a3d0b9804072283d9d00e37ae0",
+      "transform": "Self-authored PBM recreates indented dialogue-line geometry observed in projectID603d7d5e04ca0/161.png; it copies no source pixels or F2 text.",
+      "foreground_bounds": [20, 20, 100, 115],
+      "expected_candidates": [[20, 20, 100, 25], [28, 40, 98, 45], [28, 60, 100, 65], [20, 80, 92, 85], [20, 100, 100, 105], [80, 110, 100, 115]],
+      "reviewed_on": "2026-08-24",
+      "accepted": true,
+      "exclusions": [],
+      "operations": [
+        {"kind": "match", "source_ordinal": 0, "candidate_ordinal": 0, "cost": 0.008461538461538432},
+        {"kind": "match", "source_ordinal": 1, "candidate_ordinal": 1, "cost": 0.20182692307692307},
+        {"kind": "match", "source_ordinal": 2, "candidate_ordinal": 2, "cost": 0.19653846153846155},
+        {"kind": "match", "source_ordinal": 3, "candidate_ordinal": 3, "cost": 0.205},
+        {"kind": "match", "source_ordinal": 4, "candidate_ordinal": 4, "cost": 0.20076923076923076},
+        {"kind": "match", "source_ordinal": 5, "candidate_ordinal": 5, "cost": 0.41500000000000004}
+      ]
+    },
+    {
+      "case_id": "beta-styled",
+      "project_id": "projectID67a80fde44d34",
+      "page_name": "021.png",
+      "f2_text": "The account was copied from a journal kept beside the northern door.\nIt named the visitors and the hour at which each one arrived.\nThe witness wrote <i>not seen</i> beside the final item in the list.\nA second hand added a brief note below the signature.\nThe ink had faded, but every line remained legible to the reader.",
+      "image_path": "accepted/beta-styled.pbm",
+      "source_sha256": "4702a07f6758124282b1ecbccb2f78c57df04ea8d5e8b43df33bffddab7e88d0",
+      "fixture_sha256": "768c47ca56a27ad1349918b0c6ac4737092d8158679966f6ab0761aafef9fff6",
+      "transform": "Self-authored PBM recreates single-column prose rows around an italic phrase observed in projectID67a80fde44d34/021.png; it copies no source pixels or F2 text.",
+      "foreground_bounds": [20, 20, 100, 105],
+      "expected_candidates": [[20, 20, 100, 25], [20, 40, 98, 45], [20, 60, 100, 66], [20, 80, 96, 85], [20, 100, 100, 105]],
+      "reviewed_on": "2026-08-24",
+      "accepted": true,
+      "exclusions": [],
+      "operations": [
+        {"kind": "match", "source_ordinal": 0, "candidate_ordinal": 0, "cost": 0.0},
+        {"kind": "match", "source_ordinal": 1, "candidate_ordinal": 1, "cost": 0.1928676470588235},
+        {"kind": "match", "source_ordinal": 2, "candidate_ordinal": 2, "cost": 0.21161764705882352},
+        {"kind": "match", "source_ordinal": 3, "candidate_ordinal": 3, "cost": 0.23382352941176465},
+        {"kind": "match", "source_ordinal": 4, "candidate_ordinal": 4, "cost": 0.1742647058823529}
+      ]
+    },
+    {
+      "case_id": "gamma-unicode",
+      "project_id": "projectID67a80fde44d34",
+      "page_name": "053.png",
+      "f2_text": "The caf\u00e9 stood open while the rain settled on the empty square.\nA visitor placed a folded map beside the cup and waited quietly.\nThe host replied in <b>French</b>, then returned to the doorway.\nNo carriage came before the clock completed its slow circuit.\nAt dusk the lamps gave the wet pavement a silver color.",
+      "image_path": "accepted/gamma-unicode.pbm",
+      "source_sha256": "e99ac08285395311d8c69d12a3786987ba7fc4bea51d6cfb233505621b176af8",
+      "fixture_sha256": "165d97d759f993f36a0a91bf94a475160ca9ebe2c7bc710ef6adb1b9f6a7eddd",
+      "transform": "Self-authored PBM recreates single-column prose-row geometry observed in projectID67a80fde44d34/053.png, whose F2 source includes £; it copies no source pixels or F2 text.",
+      "foreground_bounds": [20, 20, 100, 105],
+      "expected_candidates": [[20, 20, 100, 25], [20, 40, 96, 45], [20, 60, 98, 65], [20, 80, 94, 85], [20, 100, 100, 105]],
+      "reviewed_on": "2026-08-24",
+      "accepted": true,
+      "exclusions": [],
+      "operations": [
+        {"kind": "match", "source_ordinal": 0, "candidate_ordinal": 0, "cost": 0.00859375},
+        {"kind": "match", "source_ordinal": 1, "candidate_ordinal": 1, "cost": 0.17750000000000002},
+        {"kind": "match", "source_ordinal": 2, "candidate_ordinal": 2, "cost": 0.20140624999999998},
+        {"kind": "match", "source_ordinal": 3, "candidate_ordinal": 3, "cost": 0.16546874999999997},
+        {"kind": "match", "source_ordinal": 4, "candidate_ordinal": 4, "cost": 0.22734375}
+      ]
+    },
+    {
+      "case_id": "gamma-ragged",
+      "project_id": "projectID609bfa0449bdf",
+      "page_name": "p148.png",
+      "f2_text": "The messenger waited at the gate until the keeper returned.\nHe carried no parcel.\nHis coat was wet from the road and dark at the shoulders.\nThe keeper gave him bread before asking his business.\nThey spoke together in the narrow passage for some time.",
+      "image_path": "accepted/gamma-ragged.pbm",
+      "source_sha256": "d55b812ce7e8ff48057b03b3ceeecaf00723841c5b02596dce0355ad53bed6a0",
+      "fixture_sha256": "55beea105e381ee87272d841f4e99627ef2b3b93370f38e9e429d90c6c296807",
+      "transform": "Self-authored PBM recreates nonuniform right-edge prose-row widths observed in projectID609bfa0449bdf/p148.png; it copies no source pixels or F2 text.",
+      "foreground_bounds": [20, 20, 100, 105],
+      "expected_candidates": [[20, 20, 100, 25], [20, 40, 90, 45], [20, 60, 96, 65], [20, 80, 88, 85], [20, 100, 100, 105]],
+      "reviewed_on": "2026-08-24",
+      "accepted": true,
+      "exclusions": [],
+      "operations": [
+        {"kind": "match", "source_ordinal": 0, "candidate_ordinal": 0, "cost": 0.0},
+        {"kind": "match", "source_ordinal": 1, "candidate_ordinal": 1, "cost": 0.43548728813559323},
+        {"kind": "match", "source_ordinal": 2, "candidate_ordinal": 2, "cost": 0.15885593220338984},
+        {"kind": "match", "source_ordinal": 3, "candidate_ordinal": 3, "cost": 0.17656779661016953},
+        {"kind": "match", "source_ordinal": 4, "candidate_ordinal": 4, "cost": 0.17796610169491522}
+      ]
+    },
+    {
+      "case_id": "delta-columns",
+      "project_id": "projectID657550412c8dc",
+      "page_name": "w0030.png",
+      "f2_text": "First left column line holds a short phrase for the fixture.\nSecond left column line holds another phrase for the fixture.\nThird left column line continues the small example for review.\nFourth left column line completes the visual evidence set.\nFifth left column line closes the artificial page sample.",
+      "image_path": "excluded/delta-columns.pbm",
+      "source_sha256": "93a432a33b0dfd664c6d3f36c659a0319872652279398f00d21e2ff1387dfcda",
+      "fixture_sha256": "0d8d88208ab78efb0931c83b7885ce7d2c720f9295d7af0d09c717e29fc6e40f",
+      "transform": "Self-authored PBM recreates the two column measures and central gutter observed in projectID657550412c8dc/w0030.png; it copies no source pixels or F2 text.",
+      "foreground_bounds": [20, 20, 120, 105],
+      "expected_candidates": [],
+      "reviewed_on": "2026-08-24",
+      "accepted": false,
+      "exclusions": ["fragmented_band", "probable_multi_column", "persistent_gutter", "line_count_difference_exceeds_maximum"],
+      "operations": [
+        {"kind": "skip_text", "source_ordinal": 0, "candidate_ordinal": null, "cost": 1.0},
+        {"kind": "skip_text", "source_ordinal": 1, "candidate_ordinal": null, "cost": 1.0},
+        {"kind": "skip_text", "source_ordinal": 2, "candidate_ordinal": null, "cost": 1.0},
+        {"kind": "skip_text", "source_ordinal": 3, "candidate_ordinal": null, "cost": 1.0},
+        {"kind": "skip_text", "source_ordinal": 4, "candidate_ordinal": null, "cost": 1.0}
+      ]
+    },
+    {
+      "case_id": "delta-table-rule",
+      "project_id": "projectID67a80fde44d34",
+      "page_name": "005.png",
+      "f2_text": "/*Name      Age      Place\nAda       31       Dublin\nBert      42       Leeds\nCora      27       York\nDate      1864     Filed*/",
+      "image_path": "excluded/delta-table-rule.pbm",
+      "source_sha256": "4babca1506ce86703a7ade33787f3ba18315af7867a258755d15e660e18c63ae",
+      "fixture_sha256": "1d2aed09e35ca0f06dd7ebd9c22b9dffb09d54419fa2b1c5a65f1c2944c9e1fe",
+      "transform": "Self-authored PBM recreates contents-table rows and horizontal rules observed in projectID67a80fde44d34/005.png; it copies no source pixels or F2 text.",
+      "foreground_bounds": [15, 20, 106, 126],
+      "expected_candidates": [[20, 20, 100, 25], [20, 40, 100, 45], [20, 60, 100, 65], [20, 80, 100, 85], [20, 100, 100, 105]],
+      "reviewed_on": "2026-08-24",
+      "accepted": false,
+      "exclusions": ["table_like"],
+      "operations": [
+        {"kind": "match", "source_ordinal": 0, "candidate_ordinal": 0, "cost": 0.058219780219780214},
+        {"kind": "match", "source_ordinal": 1, "candidate_ordinal": 1, "cost": 0.23021978021978023},
+        {"kind": "match", "source_ordinal": 2, "candidate_ordinal": 2, "cost": 0.20821978021978022},
+        {"kind": "match", "source_ordinal": 3, "candidate_ordinal": 3, "cost": 0.18621978021978025},
+        {"kind": "match", "source_ordinal": 4, "candidate_ordinal": 4, "cost": 0.20821978021978022}
+      ]
+    },
+    {
+      "case_id": "epsilon-too-few",
+      "project_id": "projectID609bfa0449bdf",
+      "page_name": "a001.png",
+      "f2_text": "A short page begins here.\nIt has only three lines.\nThat is not enough for alignment.",
+      "image_path": "excluded/epsilon-too-few.pbm",
+      "source_sha256": "5acf7c89f45d23b76b881c423e7d6284887fcbf8e4a0de2ab3c9a85f36ec7d3c",
+      "fixture_sha256": "35e3e784c6b84eb5014398ffbcef57b67ab51c368876847d32a1fc552d4d0ba4",
+      "transform": "Self-authored PBM recreates the three title-page ink bands observed in projectID609bfa0449bdf/a001.png; it copies no source pixels or F2 text.",
+      "foreground_bounds": [20, 20, 100, 65],
+      "expected_candidates": [[20, 20, 100, 25], [20, 40, 96, 45], [20, 60, 98, 65]],
+      "reviewed_on": "2026-08-24",
+      "accepted": false,
+      "exclusions": ["line_count_out_of_range"],
+      "operations": [
+        {"kind": "skip_image", "source_ordinal": null, "candidate_ordinal": 0, "cost": 1.0},
+        {"kind": "skip_image", "source_ordinal": null, "candidate_ordinal": 1, "cost": 1.0},
+        {"kind": "skip_image", "source_ordinal": null, "candidate_ordinal": 2, "cost": 1.0},
+        {"kind": "skip_text", "source_ordinal": 0, "candidate_ordinal": null, "cost": 1.0},
+        {"kind": "skip_text", "source_ordinal": 1, "candidate_ordinal": null, "cost": 1.0},
+        {"kind": "skip_text", "source_ordinal": 2, "candidate_ordinal": null, "cost": 1.0}
+      ]
+    },
+    {
+      "case_id": "epsilon-source-diagnostic",
+      "project_id": "projectID609bfa0449bdf",
+      "page_name": "p055.png",
+      "f2_text": "first readable line\n/* broken control\nthird unavailable line\nfourth unavailable line",
+      "image_path": "excluded/epsilon-source-diagnostic.pbm",
+      "source_sha256": "a39920c85be7eb9c3233556d3e59d6e1592bc63fb18decadafb5ed3dafbdf47e",
+      "fixture_sha256": "c4686c1817b4718025bb4d961888fff2a19bf6efaed8b0e81f8d0a720b57bedb",
+      "transform": "Self-authored PBM recreates prose-row geometry from projectID609bfa0449bdf/p055.png, whose F2 source has a formatting-control diagnostic; it copies no source pixels or F2 text.",
+      "foreground_bounds": [20, 20, 100, 85],
+      "expected_candidates": [[20, 20, 100, 25], [20, 40, 98, 45], [20, 60, 96, 65], [20, 80, 100, 85]],
+      "reviewed_on": "2026-08-24",
+      "accepted": false,
+      "exclusions": ["malformed_control", "line_count_out_of_range", "line_count_difference_exceeds_maximum"],
+      "operations": [
+        {"kind": "skip_image", "source_ordinal": null, "candidate_ordinal": 0, "cost": 1.0},
+        {"kind": "skip_image", "source_ordinal": null, "candidate_ordinal": 1, "cost": 1.0},
+        {"kind": "skip_image", "source_ordinal": null, "candidate_ordinal": 2, "cost": 1.0},
+        {"kind": "skip_image", "source_ordinal": null, "candidate_ordinal": 3, "cost": 1.0},
+        {"kind": "skip_text", "source_ordinal": 0, "candidate_ordinal": null, "cost": 1.0}
+      ]
+    },
+    {
+      "case_id": "zeta-illustration",
+      "project_id": "projectID67a80fde44d34",
+      "page_name": "002.png",
+      "f2_text": "[Illustration: an ornamental initial]\nThe chapter opened with a brief account of the old estate.\nIts garden had been neglected since the previous winter.\nA narrow path led from the gate to the ruined fountain.\nThe visitor paused before entering the silent house.",
+      "image_path": "excluded/zeta-illustration.pbm",
+      "source_sha256": "95b34f59ad5ad2f2fa39e3b0d63d26f3af216f42be127de6949565745ed5d322",
+      "fixture_sha256": "6f03f607faab6e6d45e8114b940f8e249e10d8d1dd0c9b05fa97ed2741e2fd68",
+      "transform": "Self-authored PBM recreates the single dense non-row ink region observed in projectID67a80fde44d34/002.png; it copies no source pixels or F2 text.",
+      "foreground_bounds": [25, 15, 95, 115],
+      "expected_candidates": [],
+      "reviewed_on": "2026-08-24",
+      "accepted": false,
+      "exclusions": ["insufficient_ink_bands", "illustration_marker", "line_count_difference_exceeds_maximum"],
+      "operations": [
+        {"kind": "skip_text", "source_ordinal": 0, "candidate_ordinal": null, "cost": 1.0},
+        {"kind": "skip_text", "source_ordinal": 1, "candidate_ordinal": null, "cost": 1.0},
+        {"kind": "skip_text", "source_ordinal": 2, "candidate_ordinal": null, "cost": 1.0},
+        {"kind": "skip_text", "source_ordinal": 3, "candidate_ordinal": null, "cost": 1.0},
+        {"kind": "skip_text", "source_ordinal": 4, "candidate_ordinal": null, "cost": 1.0}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,432 @@
+{
+  "$defs": {
+    "AtlasSheetInput": {
+      "additionalProperties": true,
+      "properties": {
+        "character": {
+          "maxLength": 1,
+          "minLength": 1,
+          "title": "Character",
+          "type": "string"
+        },
+        "label_tier": {
+          "enum": [
+            "transcribed",
+            "recognized"
+          ],
+          "title": "Label Tier",
+          "type": "string"
+        },
+        "sheet_ordinal": {
+          "minimum": 0,
+          "title": "Sheet Ordinal",
+          "type": "integer"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "cell_count": {
+          "exclusiveMinimum": 0,
+          "title": "Cell Count",
+          "type": "integer"
+        },
+        "cell_width_px": {
+          "exclusiveMinimum": 0,
+          "title": "Cell Width Px",
+          "type": "integer"
+        },
+        "cell_height_px": {
+          "exclusiveMinimum": 0,
+          "title": "Cell Height Px",
+          "type": "integer"
+        },
+        "sha256": {
+          "maxLength": 64,
+          "minLength": 64,
+          "title": "Sha256",
+          "type": "string"
+        },
+        "clipped_cell_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Clipped Cell Count",
+          "type": "integer"
+        },
+        "label_style": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label Style"
+        }
+      },
+      "required": [
+        "character",
+        "label_tier",
+        "sheet_ordinal",
+        "path",
+        "cell_count",
+        "cell_width_px",
+        "cell_height_px",
+        "sha256"
+      ],
+      "title": "AtlasSheetInput",
+      "type": "object"
+    },
+    "CharacterCoverageInput": {
+      "additionalProperties": true,
+      "properties": {
+        "character": {
+          "maxLength": 1,
+          "minLength": 1,
+          "title": "Character",
+          "type": "string"
+        },
+        "label_tier": {
+          "enum": [
+            "transcribed",
+            "recognized"
+          ],
+          "title": "Label Tier",
+          "type": "string"
+        },
+        "glyph_count": {
+          "exclusiveMinimum": 0,
+          "title": "Glyph Count",
+          "type": "integer"
+        },
+        "label_style": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label Style"
+        }
+      },
+      "required": [
+        "character",
+        "label_tier",
+        "glyph_count"
+      ],
+      "title": "CharacterCoverageInput",
+      "type": "object"
+    },
+    "GlyphPageInput": {
+      "additionalProperties": true,
+      "properties": {
+        "page_name": {
+          "minLength": 1,
+          "title": "Page Name",
+          "type": "string"
+        },
+        "scan_sha256": {
+          "maxLength": 64,
+          "minLength": 64,
+          "title": "Scan Sha256",
+          "type": "string"
+        },
+        "source_path": {
+          "minLength": 1,
+          "title": "Source Path",
+          "type": "string"
+        },
+        "glyph_count": {
+          "minimum": 0,
+          "title": "Glyph Count",
+          "type": "integer"
+        },
+        "page_state": {
+          "default": "accepted",
+          "minLength": 1,
+          "title": "Page State",
+          "type": "string"
+        },
+        "admitted_line_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Admitted Line Count",
+          "type": "integer"
+        },
+        "recognizer_admitted_line_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Recognizer Admitted Line Count",
+          "type": "integer"
+        },
+        "page_class": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Class"
+        },
+        "line_x_height_median_px": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Line X Height Median Px"
+        },
+        "line_x_height_spread_px": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Line X Height Spread Px"
+        }
+      },
+      "required": [
+        "page_name",
+        "scan_sha256",
+        "source_path",
+        "glyph_count"
+      ],
+      "title": "GlyphPageInput",
+      "type": "object"
+    },
+    "JsonValue": {}
+  },
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "algorithm_version": {
+      "title": "Algorithm Version",
+      "type": "string"
+    },
+    "tool_version": {
+      "minLength": 1,
+      "title": "Tool Version",
+      "type": "string"
+    },
+    "project_id": {
+      "minLength": 1,
+      "title": "Project Id",
+      "type": "string"
+    },
+    "alignment_label": {
+      "minLength": 1,
+      "title": "Alignment Label",
+      "type": "string"
+    },
+    "alignment_sha256": {
+      "maxLength": 64,
+      "minLength": 64,
+      "title": "Alignment Sha256",
+      "type": "string"
+    },
+    "profile_label": {
+      "minLength": 1,
+      "title": "Profile Label",
+      "type": "string"
+    },
+    "profile_sha256": {
+      "maxLength": 64,
+      "minLength": 64,
+      "title": "Profile Sha256",
+      "type": "string"
+    },
+    "rows_label": {
+      "minLength": 1,
+      "title": "Rows Label",
+      "type": "string"
+    },
+    "rows_sha256": {
+      "maxLength": 64,
+      "minLength": 64,
+      "title": "Rows Sha256",
+      "type": "string"
+    },
+    "methods": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Methods",
+      "type": "object"
+    },
+    "thresholds": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Thresholds",
+      "type": "object"
+    },
+    "page_count": {
+      "minimum": 0,
+      "title": "Page Count",
+      "type": "integer"
+    },
+    "accepted_page_count": {
+      "minimum": 0,
+      "title": "Accepted Page Count",
+      "type": "integer"
+    },
+    "harvested_page_count": {
+      "minimum": 0,
+      "title": "Harvested Page Count",
+      "type": "integer"
+    },
+    "reconciled_word_count": {
+      "minimum": 0,
+      "title": "Reconciled Word Count",
+      "type": "integer"
+    },
+    "separable_word_count": {
+      "minimum": 0,
+      "title": "Separable Word Count",
+      "type": "integer"
+    },
+    "furniture_word_count": {
+      "minimum": 0,
+      "title": "Furniture Word Count",
+      "type": "integer"
+    },
+    "glyph_count_by_tier": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Glyph Count By Tier",
+      "type": "object"
+    },
+    "coverage": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/CharacterCoverageInput"
+      },
+      "title": "Coverage",
+      "type": "array"
+    },
+    "quality_flag_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Quality Flag Counts",
+      "type": "object"
+    },
+    "word_reject_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Word Reject Counts",
+      "type": "object"
+    },
+    "page_exclusion_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Page Exclusion Counts",
+      "type": "object"
+    },
+    "pages": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/GlyphPageInput"
+      },
+      "title": "Pages",
+      "type": "array"
+    },
+    "atlas": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/AtlasSheetInput"
+      },
+      "title": "Atlas",
+      "type": "array"
+    },
+    "geometry_label": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Geometry Label"
+    },
+    "geometry_sha256": {
+      "anyOf": [
+        {
+          "maxLength": 64,
+          "minLength": 64,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Geometry Sha256"
+    },
+    "ocr_recognizer": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ocr Recognizer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "algorithm_version",
+    "tool_version",
+    "project_id",
+    "alignment_label",
+    "alignment_sha256",
+    "profile_label",
+    "profile_sha256",
+    "rows_label",
+    "rows_sha256",
+    "page_count",
+    "accepted_page_count",
+    "harvested_page_count",
+    "reconciled_word_count",
+    "separable_word_count",
+    "furniture_word_count"
+  ],
+  "title": "GlyphManifestInput",
+  "type": "object"
+}

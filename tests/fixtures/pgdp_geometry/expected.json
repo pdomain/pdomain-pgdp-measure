@@ -1,0 +1,49 @@
+{
+  "fixtures": [
+    {
+      "name": "clean",
+      "file": "clean-text.pbm",
+      "foreground_bounds": [3, 2, 17, 14],
+      "ink_bands": [[2, 4], [7, 9], [12, 14]],
+      "diagnostics": [],
+      "exif_orientation": null,
+      "require_zero_bounds_error": true
+    },
+    {
+      "name": "noise",
+      "file": "noise.pbm",
+      "foreground_bounds": [0, 0, 20, 16],
+      "ink_bands": [[5, 7], [10, 12]],
+      "diagnostics": [],
+      "exif_orientation": null,
+      "require_zero_bounds_error": false
+    },
+    {
+      "name": "border",
+      "file": "border.pbm",
+      "foreground_bounds": [0, 0, 20, 16],
+      "ink_bands": [],
+      "diagnostics": ["border_dominated"],
+      "exif_orientation": null,
+      "require_zero_bounds_error": false
+    },
+    {
+      "name": "oriented",
+      "file": "oriented.jpg",
+      "foreground_bounds": [2, 3, 13, 11],
+      "ink_bands": [[3, 5], [9, 11]],
+      "diagnostics": [],
+      "exif_orientation": 6,
+      "require_zero_bounds_error": true
+    },
+    {
+      "name": "blank",
+      "file": "blank.pbm",
+      "foreground_bounds": null,
+      "ink_bands": [],
+      "diagnostics": ["blank"],
+      "exif_orientation": null,
+      "require_zero_bounds_error": false
+    }
+  ]
+}
