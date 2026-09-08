@@ -400,3 +400,88 @@ def test_a_speck_above_a_chapter_opening_still_leaves_every_band() -> None:
     # The residual measures the opening against its template, so it must come
     # from the band that opens the chapter and not from the speck above it.
     assert classified["p021.png"].template_residual_px == 0
+
+
+def test_a_template_records_the_spread_of_its_own_group() -> None:
+    from pdomain_pgdp_measure.page_templates import fit_book_templates
+
+    # Recto pages sit tightly around 300; the spread should be small.
+    pages = [
+        _page("p001.png", first_band_top=300),
+        _page("p003.png", first_band_top=302),
+        _page("p005.png", first_band_top=298),
+        _page("p002.png", first_band_top=301),
+        _page("p004.png", first_band_top=299),
+    ]
+    templates = fit_book_templates(pages)
+    assert templates.templates
+    for template in templates.templates:
+        assert template.first_band_spread_px >= 0
+        assert template.first_band_spread_px <= 4
+
+
+def test_a_single_page_group_has_zero_spread() -> None:
+    from pdomain_pgdp_measure.page_templates import _fit_template, _PageGeometry
+
+    only = _PageGeometry(
+        page_name="p001.png",
+        band_tops=(300,),
+        text_left=80,
+        text_right=920,
+        band_count=1,
+        recto=True,
+    )
+    template = _fit_template("normal_recto", [only], total=1)
+    assert template is not None
+    assert template.first_band_spread_px == 0
+
+
+def test_the_spread_reaches_the_serialized_profile() -> None:
+    from pdomain_pgdp_measure.profile_models import PageTemplateRecord
+
+    record = PageTemplateRecord(
+        page_class="normal_recto",
+        first_band_top_px=300,
+        first_band_spread_px=2,
+        text_left_px=80,
+        text_right_px=920,
+        band_count=24,
+        page_count=5,
+        page_share=0.5,
+    )
+    assert record.to_dict()["first_band_spread_px"] == 2
+
+
+def test_the_spread_survives_a_profile_round_trip() -> None:
+    from pdomain_pgdp_measure.profile_models import PageTemplateWire
+
+    wire = PageTemplateWire.model_validate(
+        {
+            "page_class": "normal_recto",
+            "first_band_top_px": 300,
+            "first_band_spread_px": 2,
+            "text_left_px": 80,
+            "text_right_px": 920,
+            "band_count": 24,
+            "page_count": 5,
+            "page_share": 0.5,
+        }
+    )
+    assert wire.to_domain().first_band_spread_px == 2
+
+
+def test_a_stored_profile_without_the_key_still_validates() -> None:
+    from pdomain_pgdp_measure.profile_models import PageTemplateWire
+
+    wire = PageTemplateWire.model_validate(
+        {
+            "page_class": "normal_recto",
+            "first_band_top_px": 300,
+            "text_left_px": 80,
+            "text_right_px": 920,
+            "band_count": 24,
+            "page_count": 5,
+            "page_share": 0.5,
+        }
+    )
+    assert wire.to_domain().first_band_spread_px == 0

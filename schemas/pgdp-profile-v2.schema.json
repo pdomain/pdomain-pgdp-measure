@@ -652,6 +652,11 @@
           "title": "First Band Top Px",
           "type": "integer"
         },
+        "first_band_spread_px": {
+          "default": 0,
+          "title": "First Band Spread Px",
+          "type": "integer"
+        },
         "text_left_px": {
           "title": "Text Left Px",
           "type": "integer"
