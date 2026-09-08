@@ -7,6 +7,7 @@ name = "pdomain-pgdp-measure"
 dynamic = ["version"]
 description = "Font-free measurement of PGDP scans: geometry, alignment, typography, glyphs"
 readme = "README.md"
+license = { text = "Unlicense" }
 requires-python = ">=3.13,<3.14"
 authors = [{ name = "CT" }]
 # Exactly three runtime dependencies. Adding a fourth fails the extraction plan:
