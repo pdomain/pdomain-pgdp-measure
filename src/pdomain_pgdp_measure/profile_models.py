@@ -529,11 +529,13 @@ class PageTemplateRecord:
     band_count: int
     page_count: int
     page_share: float
+    first_band_spread_px: int = 0
 
     def to_dict(self) -> dict[str, JsonValue]:
         return {
             "page_class": self.page_class,
             "first_band_top_px": self.first_band_top_px,
+            "first_band_spread_px": self.first_band_spread_px,
             "text_left_px": self.text_left_px,
             "text_right_px": self.text_right_px,
             "band_count": self.band_count,
@@ -1048,6 +1050,7 @@ class PageMeasurementWire(_WireModel):
 class PageTemplateWire(_WireModel):
     page_class: str = Field(min_length=1)
     first_band_top_px: StrictInt
+    first_band_spread_px: StrictInt = 0
     text_left_px: StrictInt
     text_right_px: StrictInt
     band_count: StrictInt = Field(ge=0)
@@ -1058,6 +1061,7 @@ class PageTemplateWire(_WireModel):
         return PageTemplateRecord(
             page_class=self.page_class,
             first_band_top_px=self.first_band_top_px,
+            first_band_spread_px=self.first_band_spread_px,
             text_left_px=self.text_left_px,
             text_right_px=self.text_right_px,
             band_count=self.band_count,

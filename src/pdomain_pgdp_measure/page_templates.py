@@ -70,6 +70,7 @@ class PageTemplate:
 
     page_class: PageClass
     first_band_top_px: int
+    first_band_spread_px: int
     text_left_px: int
     text_right_px: int
     band_count: int
@@ -288,9 +289,12 @@ def _fit_template(
 ) -> PageTemplate | None:
     if not group:
         return None
+    tops = [item.first_band_top for item in group]
+    center = median(tops)
     return PageTemplate(
         page_class=page_class,
-        first_band_top_px=int(median(item.first_band_top for item in group)),
+        first_band_top_px=int(center),
+        first_band_spread_px=int(median(abs(top - center) for top in tops)),
         text_left_px=int(median(item.text_left for item in group)),
         text_right_px=int(median(item.text_right for item in group)),
         band_count=int(median(item.band_count for item in group)),

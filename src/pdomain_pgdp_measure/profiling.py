@@ -116,6 +116,7 @@ def profile_project(project: ProfileInputProject) -> ProjectProfile:
             PageTemplateRecord(
                 page_class=template.page_class,
                 first_band_top_px=template.first_band_top_px,
+                first_band_spread_px=template.first_band_spread_px,
                 text_left_px=template.text_left_px,
                 text_right_px=template.text_right_px,
                 band_count=template.band_count,
