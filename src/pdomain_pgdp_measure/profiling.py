@@ -138,6 +138,7 @@ def _with_page_class(
         page_class=classification.page_class,
         template_residual_px=classification.template_residual_px,
         furniture_band_ordinals=classification.furniture_band_ordinals,
+        page_class_confidence=classification.confidence,
     )
 
 

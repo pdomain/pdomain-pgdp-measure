@@ -485,3 +485,29 @@ def test_a_stored_profile_without_the_key_still_validates() -> None:
         }
     )
     assert wire.to_domain().first_band_spread_px == 0
+
+
+def test_normal_pages_score_full_confidence_on_an_exact_match() -> None:
+    pages = _steady_book()
+    templates = fit_book_templates(pages)
+    classified = {item.page_name: item for item in classify_pages(pages, templates)}
+    assert classified["p001.png"].confidence == 1.0
+
+
+def test_an_unknown_page_has_no_confidence() -> None:
+    trough = _page("p021.png", first_band_top=151)
+    pages = (*_steady_book(), trough)
+    templates = fit_book_templates(pages)
+    classified = {item.page_name: item for item in classify_pages(pages, templates)}
+    assert classified["p021.png"].page_class == "unknown"
+    assert classified["p021.png"].confidence is None
+
+
+def test_confidence_is_bounded_between_zero_and_one_for_a_chapter_opening() -> None:
+    pages = (*_steady_book(), _page("p021.png", first_band_top=367, bands=20))
+    templates = fit_book_templates(pages)
+    classified = {item.page_name: item for item in classify_pages(pages, templates)}
+    opening = classified["p021.png"]
+    assert opening.page_class == "chapter_opening"
+    assert opening.confidence is not None
+    assert 0.0 <= opening.confidence <= 1.0

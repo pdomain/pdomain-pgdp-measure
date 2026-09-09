@@ -13,6 +13,7 @@ from pydantic import (
     ConfigDict,
     Field,
     JsonValue,
+    StrictFloat,
     StrictInt,
     StrictStr,
     TypeAdapter,
@@ -284,6 +285,7 @@ class PageMeasurement:
     page_class: str = "unknown"
     template_residual_px: int | None = None
     furniture_band_ordinals: tuple[int, ...] = ()
+    page_class_confidence: float | None = None
     extensions: Mapping[str, object] = field(default_factory=dict)
     image_extensions: Mapping[str, object] = field(default_factory=dict)
     observation_extensions: Mapping[str, object] = field(default_factory=dict)
@@ -513,6 +515,7 @@ class PageMeasurement:
                 "page_class": self.page_class,
                 "template_residual_px": self.template_residual_px,
                 "furniture_band_ordinals": list(self.furniture_band_ordinals),
+                "page_class_confidence": self.page_class_confidence,
             },
             self.extensions,
         )
@@ -932,6 +935,7 @@ class PageMeasurementWire(_WireModel):
     page_class: str = "unknown"
     template_residual_px: StrictInt | None = None
     furniture_band_ordinals: tuple[StrictInt, ...] = ()
+    page_class_confidence: StrictFloat | None = None
 
     @field_validator("source_path")
     @classmethod
@@ -1040,6 +1044,7 @@ class PageMeasurementWire(_WireModel):
             page_class=self.page_class,
             template_residual_px=self.template_residual_px,
             furniture_band_ordinals=self.furniture_band_ordinals,
+            page_class_confidence=self.page_class_confidence,
             extensions=_wire_extensions(self),
             image_extensions={} if image is None else _wire_extensions(image),
             observation_extensions=_wire_extensions(observations),

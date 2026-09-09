@@ -103,6 +103,7 @@ class PageClassification:
     page_class: PageClass
     template_residual_px: int | None
     furniture_band_ordinals: tuple[int, ...]
+    confidence: float | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -203,25 +204,47 @@ def _classify_page(
         # The running head is printed but deleted from F2, so the aligner must not
         # match a source line to it. Nothing is printed above the head, so every
         # band down to and including it is furniture.
+        residual = int(abs(head_top - template.first_band_top_px))
         return PageClassification(
             geometry.page_name,
             template.page_class,
-            int(abs(head_top - template.first_band_top_px)),
+            residual,
             tuple(range(head_ordinal + 1)),
+            _confidence_from_residual(residual, template),
         )
 
     if offset >= _CHAPTER_SINK_MINIMUM_PX and "chapter_opening" in by_class:
         template = by_class["chapter_opening"]
+        residual = int(abs(head_top - template.first_band_top_px))
         return PageClassification(
             geometry.page_name,
             "chapter_opening",
-            int(abs(head_top - template.first_band_top_px)),
+            residual,
             (),
+            _confidence_from_residual(residual, template),
         )
 
     # Between the head window and the chapter sink the evidence is thin, so the
     # page is left unclassified rather than forced into a template.
     return PageClassification(geometry.page_name, "unknown", None, ())
+
+
+def _confidence_from_residual(residual_px: int, template: PageTemplate) -> float:
+    """Invert and scale a template residual into a 0..1 confidence.
+
+    ``template_residual_px`` is a raw pixel distance: unbounded, and lower is
+    better, the opposite polarity of every other confidence in the suite. The
+    scale is the spread of the template's own fitted group
+    (``first_band_spread_px``), floored at ``_HEAD_WINDOW_MINIMUM_PX`` so a
+    single-page group — whose spread is 0 — never divides by zero and never
+    collapses every nonzero residual straight to 0. A normal page's spread is
+    bounded by the book's head window; a chapter opening's is measured against
+    pages that sank by widely differing amounts, so each template scores
+    against its own spread rather than one shared constant.
+    """
+
+    scale_px = max(template.first_band_spread_px, _HEAD_WINDOW_MINIMUM_PX)
+    return max(0.0, 1.0 - (residual_px / scale_px))
 
 
 def _head_band_ordinal(geometry: _PageGeometry, *, center: float, window: float) -> int:
