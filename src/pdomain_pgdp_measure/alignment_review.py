@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import os
-import tempfile
 from collections import Counter
 from dataclasses import dataclass
 from enum import StrEnum
@@ -15,7 +14,7 @@ from typing import TYPE_CHECKING, Final, Literal
 
 from PIL import Image, ImageDraw
 
-from .file_mode import FILE_MODE
+from .staged_write import open_staged
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -731,12 +730,7 @@ def _validated_output_path(output_path: str | Path, *, corpus_root: str | Path |
 
 
 def _write_overlay_atomic(overlay: Image.Image, output: Path) -> None:
-    descriptor, temporary_name = tempfile.mkstemp(
-        dir=output.parent,
-        prefix=f".{output.name}.",
-        suffix=".png",
-    )
-    temporary_path = Path(temporary_name)
+    descriptor, temporary_path = open_staged(output)
     try:
         os.close(descriptor)
         overlay.save(temporary_path, format="PNG")
@@ -745,9 +739,6 @@ def _write_overlay_atomic(overlay: Image.Image, output: Path) -> None:
             _ = os.fsync(temporary_descriptor)
         finally:
             os.close(temporary_descriptor)
-        # mkstemp creates at 0600 and ignores the umask, and a rename keeps that
-        # mode, so widen it before publishing or no other uid can read the file.
-        temporary_path.chmod(FILE_MODE)
         _ = temporary_path.replace(output)
     except Exception as write_error:
         try:

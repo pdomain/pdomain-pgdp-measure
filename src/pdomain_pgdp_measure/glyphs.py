@@ -16,7 +16,6 @@ sizes.
 from __future__ import annotations
 
 import os
-import tempfile
 from collections import Counter
 from dataclasses import dataclass, field, replace
 from hashlib import sha256
@@ -104,7 +103,7 @@ from pdomain_pgdp_measure.typography_measure import (
     x_height_gap_threshold,
 )
 
-from .file_mode import FILE_MODE
+from .staged_write import open_staged
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
@@ -844,18 +843,12 @@ def write_glyph_inventory(
 def _write_bytes(path: Path, payload: bytes) -> None:
     """Write one file atomically, so a killed run leaves no half-written inventory."""
 
-    descriptor, temporary_name = tempfile.mkstemp(
-        dir=path.parent, prefix=f".{path.name}.", suffix=".tmp"
-    )
-    temporary_path = Path(temporary_name)
+    descriptor, temporary_path = open_staged(path)
     try:
         with os.fdopen(descriptor, "wb") as temporary_file:
             _ = temporary_file.write(payload)
             temporary_file.flush()
             _ = os.fsync(temporary_file.fileno())
-        # mkstemp creates at 0600 and ignores the umask, and a rename keeps that
-        # mode, so widen it before publishing or no other uid can read the file.
-        temporary_path.chmod(FILE_MODE)
         _ = temporary_path.replace(path)
     except OSError:
         temporary_path.unlink(missing_ok=True)
