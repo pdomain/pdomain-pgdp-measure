@@ -15,6 +15,8 @@ from typing import TYPE_CHECKING, Final, Literal
 
 from PIL import Image, ImageDraw
 
+from .file_mode import FILE_MODE
+
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
@@ -743,6 +745,9 @@ def _write_overlay_atomic(overlay: Image.Image, output: Path) -> None:
             _ = os.fsync(temporary_descriptor)
         finally:
             os.close(temporary_descriptor)
+        # mkstemp creates at 0600 and ignores the umask, and a rename keeps that
+        # mode, so widen it before publishing or no other uid can read the file.
+        temporary_path.chmod(FILE_MODE)
         _ = temporary_path.replace(output)
     except Exception as write_error:
         try:

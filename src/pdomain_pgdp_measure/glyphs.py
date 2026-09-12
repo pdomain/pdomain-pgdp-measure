@@ -104,6 +104,8 @@ from pdomain_pgdp_measure.typography_measure import (
     x_height_gap_threshold,
 )
 
+from .file_mode import FILE_MODE
+
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
 
@@ -851,6 +853,9 @@ def _write_bytes(path: Path, payload: bytes) -> None:
             _ = temporary_file.write(payload)
             temporary_file.flush()
             _ = os.fsync(temporary_file.fileno())
+        # mkstemp creates at 0600 and ignores the umask, and a rename keeps that
+        # mode, so widen it before publishing or no other uid can read the file.
+        temporary_path.chmod(FILE_MODE)
         _ = temporary_path.replace(path)
     except OSError:
         temporary_path.unlink(missing_ok=True)
