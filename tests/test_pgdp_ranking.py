@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import os
+import stat
 from dataclasses import replace
 from pathlib import Path
 
@@ -76,6 +78,29 @@ def test_write_report_is_byte_stable_and_ends_with_one_newline(tmp_path: Path) -
     assert first.read_bytes() == second.read_bytes()
     assert first.read_bytes().endswith(b"\n")
     assert not first.read_bytes().endswith(b"\n\n")
+
+
+@pytest.mark.parametrize(("mask", "expected"), [(0o002, 0o664), (0o022, 0o644), (0o077, 0o600)])
+def test_write_report_publishes_the_mode_the_umask_allows(
+    tmp_path: Path, mask: int, expected: int
+) -> None:
+    """A report the host backup cannot read is a report outside every snapshot.
+
+    The staging file used to come from ``tempfile.mkstemp``, which hardcodes
+    0600 and ignores the umask, and the rename carried that onto the report.
+    ``open_staged`` lets the kernel apply the umask instead, so a shared tree
+    gets a readable report and a deliberately private umask stays private.
+    """
+    corpus_root = tmp_path / "corpus"
+    corpus_root.mkdir()
+    output = tmp_path / "report.json"
+    previous = os.umask(mask)
+    try:
+        write_report(RankingReport.empty(), output, corpus_root)
+    finally:
+        _ = os.umask(previous)
+
+    assert stat.S_IMODE(output.stat().st_mode) == expected
 
 
 def test_write_report_preserves_unicode_characters(tmp_path: Path) -> None:

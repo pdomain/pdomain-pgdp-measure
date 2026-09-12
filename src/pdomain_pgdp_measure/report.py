@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import json
 import os
-import tempfile
 from pathlib import Path
 from typing import Protocol
+
+from .staged_write import open_staged
 
 
 class _JsonReport(Protocol):
@@ -21,13 +22,7 @@ def write_report(report: _JsonReport, output_path: str | Path, corpus_root: str 
     if output.is_relative_to(root):
         raise ValueError("Report output must be outside the corpus root.")
 
-    descriptor, temporary_name = tempfile.mkstemp(
-        dir=output.parent,
-        prefix=f".{output.name}.",
-        suffix=".tmp",
-        text=True,
-    )
-    temporary_path = Path(temporary_name)
+    descriptor, temporary_path = open_staged(output)
     try:
         with os.fdopen(descriptor, "w", encoding="utf-8", newline="\n") as temporary_file:
             json.dump(
