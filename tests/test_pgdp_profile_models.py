@@ -1023,3 +1023,31 @@ def test_profile_schema_declares_mutually_exclusive_page_availability_states() -
         "properties": {"code": {"const": "blank_page"}},
         "required": ["code"],
     }
+
+
+def test_page_class_confidence_survives_a_profile_round_trip() -> None:
+    page = replace(
+        _page(), page_class="chapter_opening", template_residual_px=12, page_class_confidence=0.4
+    )
+    project = ProjectProfile(
+        project_id="projectID1",
+        title=None,
+        author=None,
+        genre=None,
+        pages=(page,),
+        pooled_estimates=(),
+    )
+    report = ProfileReport(
+        source_ranking={"algorithm_version": "pgdp-rank/v1", "sha256": "b" * 64},
+        methods={},
+        projects=(project,),
+    )
+    restored = ProfileReport.from_dict(report.to_dict())
+    assert restored.projects[0].pages[0].page_class_confidence == 0.4
+
+
+def test_a_stored_page_without_page_class_confidence_still_validates() -> None:
+    payload = _report().to_dict()
+    del payload["projects"][0]["pages"][0]["page_class_confidence"]
+    restored = ProfileReportWire.model_validate(payload).to_domain()
+    assert restored.projects[0].pages[0].page_class_confidence is None
