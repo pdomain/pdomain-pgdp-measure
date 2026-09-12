@@ -1,0 +1,67 @@
+default_install_hook_types: [pre-commit, commit-msg]
+
+repos:
+-   repo: https://gitlab.com/vojko.pribudic.foss/pre-commit-update
+    rev: v0.9.0
+    hooks:
+    # Manual stage only. This hook rewrites the pinned `rev:` values here and
+    # then fails because it modified a file, so every commit would fail
+    # whenever a hook upstream publishes a release. Run it via `make
+    # update-hooks` instead.
+    -   id: pre-commit-update
+        stages: [manual]
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-json
+    -   id: check-toml
+    -   id: check-added-large-files
+        args: [--maxkb=1000]
+    -   id: debug-statements
+    -   id: check-merge-conflict
+-   repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+    -   id: gitleaks
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    # Keep this rev and the `ruff>=` floor in pyproject.toml on the same
+    # version, or `uv run ruff check` and this hook disagree on a clean tree.
+    rev: v0.16.7
+    hooks:
+    -   id: ruff-check
+        args: [--select, I, --fix]
+    -   id: ruff-check
+        args: [--fix]
+    -   id: ruff-format
+-   repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.23.2
+    hooks:
+    -   id: markdownlint-cli2
+    -   id: markdownlint-cli2
+        alias: markdownlint-cli2-fix
+        args: [--fix]
+        stages: [manual]
+-   repo: local
+    hooks:
+    -   id: uv-lock-check
+        name: uv.lock is in sync with pyproject.toml
+        entry: uv lock --check
+        language: system
+        stages: [pre-commit]
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock)$
+    -   id: basedpyright
+        name: basedpyright type check
+        entry: uv run basedpyright src --level error
+        language: system
+        stages: [pre-commit]
+        pass_filenames: false
+        files: ^(src|tests)/.*\.py$
+-   repo: https://github.com/jorisroovers/gitlint
+    rev: v0.19.1
+    hooks:
+    -   id: gitlint
+        stages: [commit-msg]

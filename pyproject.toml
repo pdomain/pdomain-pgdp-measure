@@ -25,7 +25,9 @@ test = [
     "pytest-cov>=7.0",
 ]
 lint = [
-    "ruff>=0.15.13",
+    # Keep this floor at the ruff-pre-commit `rev:` in .pre-commit-config.yaml.
+    # Below it, `uv run ruff check` and the hook disagree on a clean tree.
+    "ruff>=0.16.7",
     "pre-commit>=4.3",
     "basedpyright>=1.39.4",
     "gitlint>=0.19.1",

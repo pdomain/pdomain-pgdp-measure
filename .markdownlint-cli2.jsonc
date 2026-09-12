@@ -1,0 +1,24 @@
+{
+  // docs/issues/TEMPLATE.md is a fill-in template: its <placeholder> tokens read
+  // as inline HTML and its heading style is deliberately atx. Real issue reports
+  // under docs/issues/ are still linted.
+  "ignores": ["docs/issues/TEMPLATE.md"],
+
+  // Project-wide markdownlint configuration, matching the pdomain-* suite.
+  //
+  // Most defaults are kept; the rules below are too noisy for the mixed
+  // prose / table / code documentation under `docs/`.
+  "config": {
+    // Long lines are common in tables and in prose that already wraps at
+    // sentence boundaries. Don't fail on them.
+    "MD013": false,
+
+    // Tables here aren't always rectangular. Enforcing compact or aligned
+    // style adds churn for no reader benefit.
+    "MD060": false,
+
+    // CHANGELOG uses ### Added / ### Fixed under each version heading.
+    // Duplicate siblings are fine.
+    "MD024": { "siblings_only": true }
+  }
+}

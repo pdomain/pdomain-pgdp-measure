@@ -266,13 +266,13 @@ dev = [
     { name = "pytest", specifier = ">=8.4" },
     { name = "pytest-cov", specifier = ">=7.0" },
     { name = "pytest-xdist", specifier = ">=3.8" },
-    { name = "ruff", specifier = ">=0.15.13" },
+    { name = "ruff", specifier = ">=0.16.7" },
 ]
 lint = [
     { name = "basedpyright", specifier = ">=1.39.4" },
     { name = "gitlint", specifier = ">=0.19.1" },
     { name = "pre-commit", specifier = ">=4.3" },
-    { name = "ruff", specifier = ">=0.15.13" },
+    { name = "ruff", specifier = ">=0.16.7" },
 ]
 test = [
     { name = "pytest", specifier = ">=8.4" },
