@@ -112,9 +112,39 @@ pdomain_release_main() {
     git push origin "$RELEASE_BRANCH"
     git push origin "$VERSION"
 
-    if [ -f ".github/workflows/release.yml" ]; then
-        echo "Triggering release workflow for $VERSION..."
-        gh workflow run release.yml --ref "$RELEASE_BRANCH" -f "tag=$VERSION"
+    # Build the artifacts and create the GitHub Release locally. This step
+    # used to dispatch the release workflow; the workflows were removed on
+    # 2026-09-13 and this script is now the whole release path.
+    #
+    # The assets matter beyond the release page: the self-hosted indexes are
+    # generated from them, so a release with no assets publishes nothing
+    # installable. Override RELEASE_BUILD for a repo that does not build with
+    # `make build`, or set it to ":" for a repo that ships no artifacts.
+    RELEASE_BUILD=${RELEASE_BUILD:-make build}
+
+    if [ "$RELEASE_BUILD" != ":" ]; then
+        echo "Building release artifacts: $RELEASE_BUILD"
+        rm -rf dist
+        if ! sh -c "$RELEASE_BUILD"; then
+            echo "ERROR: Release build failed after tagging $VERSION." >&2
+            echo "       The tag is already pushed. Fix the build, then run:" >&2
+            echo "         gh release create $VERSION dist/* --generate-notes --verify-tag" >&2
+            exit 1
+        fi
+    fi
+
+    release_files=""
+    for f in dist/*.whl dist/*.tar.gz dist/*.tgz; do
+        [ -f "$f" ] && release_files="$release_files $f"
+    done
+
+    echo "Creating the GitHub Release for $VERSION..."
+    # shellcheck disable=SC2086  # deliberate word splitting over the asset list
+    if [ -n "$release_files" ]; then
+        gh release create "$VERSION" $release_files --generate-notes --verify-tag
+    else
+        gh release create "$VERSION" --generate-notes --verify-tag
+        echo "No build artifacts to attach; released the tag alone."
     fi
 
     echo ""
