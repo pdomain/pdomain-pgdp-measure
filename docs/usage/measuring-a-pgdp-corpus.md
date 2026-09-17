@@ -180,9 +180,14 @@ and how many of its lines were admitted that way, plus what the profile calls
 the page and its lines' x-height median and spread.
 
 Those last two separate two different problems. A page whose line x-heights
-spread more than about 8 px mixes type sizes: measured, 43 to 67 percent of such
-pages are chapter openings against a 2 to 7 percent base rate, and glyphs on
-chapter openings are flagged about three times as often as glyphs elsewhere. A
+spread more than about 8 px mixes type sizes. Such a page is a chapter opening
+45 percent of the time pooled across the five books, against a 2 to 7 percent
+base rate, and glyphs on chapter openings are flagged about three times as often
+as glyphs elsewhere. Do not read that pooled figure as a rule: per book it runs
+from 0 to 85 percent, and in one book the chapter openings show no elevated
+spread at all, so spread is evidence for a chapter opening and never a test of
+one. See pdomain-ocr-synth's
+`docs/research/2026-09-17-x-height-spread-does-not-find-chapter-openings.md`. A
 page whose median runs above the book's is not a bigger size at all. The tallest
 in `projectID603d7d5e04ca0` is ordinary verse printed with heavy ink that has
 spread every letter, which is also why glyphs there merge and get flagged. One

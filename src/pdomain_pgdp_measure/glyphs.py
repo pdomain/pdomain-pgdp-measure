@@ -899,8 +899,20 @@ def _x_height_median(x_heights: Sequence[int]) -> int | None:
 def _x_height_spread(x_heights: Sequence[int]) -> int | None:
     """How far the page's line x-heights range, which is what marks a mixed-size page.
 
-    Measured, pages spreading more than 8 px are 43 to 67 percent chapter openings against a 2 to 7
-    percent base rate, so this is the signal a later page classifier wants.
+    This docstring used to claim that pages spreading more than 8 px are 43 to 67 percent chapter
+    openings. Recomputed on 2026-09-17 over all five books, that range is wrong: per-book precision
+    runs from 0 to 85 percent and pools to 45 percent, and only one book lands inside 43 to 67.
+    Per-book recall runs from 6 to 92 percent and pools to 50 percent.
+
+    The base rate holds. Chapter openings are 3.6 to 7.3 percent of the measured pages in the four
+    books that have any, so a high-spread page is still several times more likely to be one than a
+    page picked at random. But the signal is far less stable than the old figure implied: in one
+    book the chapter openings have no elevated spread at all, and a per-book adaptive threshold does
+    not recover them. Treat spread as evidence that raises confidence in a heading, never as a test
+    that decides one.
+
+    Recomputation and method: pdomain-ocr-synth's
+    docs/research/2026-09-17-x-height-spread-does-not-find-chapter-openings.md.
     """
 
     if len(x_heights) < _PAGE_X_HEIGHT_SAMPLE_MINIMUM:
