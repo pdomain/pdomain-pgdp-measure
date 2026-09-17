@@ -901,7 +901,8 @@ def _x_height_spread(x_heights: Sequence[int]) -> int | None:
 
     This docstring used to claim that pages spreading more than 8 px are 43 to 67 percent chapter
     openings. Recomputed on 2026-09-17 over all five books, that range is wrong: per-book precision
-    runs from 0 to 85 percent and pools to 45 percent, and only one book lands inside 43 to 67.
+    runs from 0 to 85 percent and pools to 45 percent, and only two of the five books land inside
+    43 to 67, at 43 and 50 percent.
     Per-book recall runs from 6 to 92 percent and pools to 50 percent.
 
     The base rate holds. Chapter openings are 3.6 to 7.3 percent of the measured pages in the four
