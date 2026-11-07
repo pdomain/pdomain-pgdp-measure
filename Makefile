@@ -43,3 +43,7 @@ build: ## Build the distribution
 	uv build
 
 ci: lint-check typecheck test build ## Full repository gate
+
+.PHONY: update-hooks
+update-hooks: ## Bump hooks to their latest releases, frozen to commit SHAs
+	uv run pre-commit autoupdate --freeze

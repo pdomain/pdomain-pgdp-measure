@@ -1,17 +1,14 @@
 default_install_hook_types: [pre-commit, commit-msg]
 
+# Pin Node for node-based hooks (markdownlint-cli2). Without a pin, nodeenv
+# picks the newest release, and nodeenv 1.10.0 crashes on prerelease versions
+# such as v27.0.0-alpha. Bump this to the current Node LTS deliberately.
+default_language_version:
+    node: 26.13.0
+
 repos:
--   repo: https://gitlab.com/vojko.pribudic.foss/pre-commit-update
-    rev: v0.9.0
-    hooks:
-    # Manual stage only. This hook rewrites the pinned `rev:` values here and
-    # then fails because it modified a file, so every commit would fail
-    # whenever a hook upstream publishes a release. Run it via `make
-    # update-hooks` instead.
-    -   id: pre-commit-update
-        stages: [manual]
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -23,13 +20,13 @@ repos:
     -   id: debug-statements
     -   id: check-merge-conflict
 -   repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.1
+    rev: 83d9cd684c87d95d656c1458ef04895a7f1cbd8e  # frozen: v8.30.1
     hooks:
     -   id: gitleaks
 -   repo: https://github.com/astral-sh/ruff-pre-commit
     # Keep this rev and the `ruff>=` floor in pyproject.toml on the same
     # version, or `uv run ruff check` and this hook disagree on a clean tree.
-    rev: v0.16.7
+    rev: e8f7d69b957a30acb2c875078d5fd012de24b64c  # frozen: v0.16.7
     hooks:
     -   id: ruff-check
         args: [--select, I, --fix]
@@ -37,7 +34,7 @@ repos:
         args: [--fix]
     -   id: ruff-format
 -   repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.23.2
+    rev: b82a6c8896e491b9cb377a99ff3412131920681b  # frozen: v0.23.2
     hooks:
     -   id: markdownlint-cli2
     -   id: markdownlint-cli2
@@ -46,6 +43,14 @@ repos:
         stages: [manual]
 -   repo: local
     hooks:
+    # External hook revisions must be full commit SHAs. A tag can be moved
+    # upstream, and pre-commit runs that code on every commit. Update pins
+    # only with `make update-hooks` (`pre-commit autoupdate --freeze`).
+    -   id: require-frozen-hook-revs
+        name: external hook revs are frozen commit SHAs
+        language: pygrep
+        entry: '^\s+rev:\s+(?![0-9a-f]{40}\s+#\s+frozen:\s+\S)'
+        files: ^\.pre-commit-config\.yaml$
     -   id: uv-lock-check
         name: uv.lock is in sync with pyproject.toml
         entry: uv lock --check
@@ -61,7 +66,7 @@ repos:
         pass_filenames: false
         files: ^(src|tests)/.*\.py$
 -   repo: https://github.com/jorisroovers/gitlint
-    rev: v0.19.1
+    rev: acc9d9de6369b76d22cb4167029d2035e8730b98  # frozen: v0.19.1
     hooks:
     -   id: gitlint
         stages: [commit-msg]
