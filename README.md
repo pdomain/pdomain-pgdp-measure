@@ -12,6 +12,10 @@ The console script is `pgdp-measure`, with subcommands `rank`, `profile`, `align
 Runtime dependencies are exactly pydantic, Pillow, and numpy. This package must stay
 installable without cv2, torch, or doctr, and a test enforces that.
 
+## Remaining work
+
+One gate is still open. The list is [docs/roadmap.md](docs/roadmap.md). The issue index is [docs/issues/README.md](docs/issues/README.md).
+
 Extraction plan and acceptance criteria live in `pdomain-ocr-synth` at
 `docs/plans/2026-09-06-extract-pgdp-measurement-library.md`.
 

@@ -50,6 +50,7 @@ gate. Both numbers are real. Keep them apart: **0.978 pooled is the gate result,
 
 See "Two measured ceilings mark where geometry stops" for why the two failing books resist a fix,
 and "Six reviewed errors survive filtering" for what even the filtered inventory still gets wrong.
+What remains unfinished is on the [remaining-work list](../roadmap.md).
 
 ## What the command writes
 
