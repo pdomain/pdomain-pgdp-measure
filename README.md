@@ -9,6 +9,8 @@ it produces.
 The console script is `pgdp-measure`, with subcommands `rank`, `profile`, `align`,
 `typography`, and `glyphs`.
 
+[Measuring a PGDP corpus](docs/usage/measuring-a-pgdp-corpus.md)
+
 Runtime dependencies are exactly pydantic, Pillow, and numpy. This package must stay
 installable without cv2, torch, or doctr, and a test enforces that.
 
