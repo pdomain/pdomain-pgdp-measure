@@ -6,7 +6,7 @@
 - **Status:** active
 - **Owner:** CT
 - **Created:** 2026-09-06
-- **Last verified:** 2026-09-06
+- **Last verified:** 2026-11-07
 - **Provenance:** verified from shipped code, schemas, tests, and the measured five-book corpus
   runs
 - **Disposition:** Current truth promoted from the complete M15d font-free typographic
@@ -23,6 +23,11 @@ that alignment recorded. It rebuilds each accepted page's ink mask, measures per
 observables, and pools them into per-book styles. It writes a deterministic `pgdp-typography/v1`
 report and opens no font. An optional `--geometry` input adds an OCR witness that flags a line
 whose leading ink run is a word fragment the transcription does not carry.
+
+Implementation and fixture behavior were checked against the code and repository tests on
+2026-11-07. Corpus counts, accuracy, and convergence figures below record earlier runs; this
+check did not repeat them. The 30-page constant is present, but this repo has no test reproducing
+the calibration; its status remains unresolved in the [intent map](../context/intent-map.md).
 
 ## The command refuses to run on a profile that does not match the alignment
 
@@ -48,8 +53,8 @@ corpus.
 
 Per matched line, the command measures: baseline row, x-height, ascender and descender extents,
 stroke width, skew slope, word runs, and a per-word ink box. Every value stays in the `source`
-coordinate frame, the same unrectified raster frame the profile and alignment reports use, and
-every unit is pixels.
+coordinate frame, the same unrectified raster frame the profile and alignment reports use.
+Distances use pixels; skew slope is dimensionless.
 
 This is deliberately font-free. The command imports no font module, opens no font file, and
 renders no text. That discipline is the point of the slice, not an incidental limit. The
@@ -62,12 +67,13 @@ would have meant searching a space with no measured target.
 The discipline is also enforced, not just stated. `typography_models.py` carries a denylist of
 substrings a report key may never contain, covering font identity, point size, font advances, side
 bearings, tracking, native word-space width, and any physical-unit suffix such as `_mm`, `_pt`,
-`_inch`, or `_dpi`. A test asserts the real corpus report names none of them.
+`_inch`, or `_dpi`. Repository tests check this discipline on generated fixture reports.
 
 ## Pooling runs in two stages so one dense page cannot dominate a book
 
-Estimates pool page medians first, then pool those page medians into a book estimate, grouped by
-the page's shipped `page_class`. This is not only a robustness choice. The shipped `Estimate` type
+Estimates pool page medians first, then pool those medians across all measured pages into a book
+estimate. Separate style estimates group pages by the shipped `page_class`; `unknown` pages
+contribute to the book estimate but no style. This is not only a robustness choice. The shipped `Estimate` type
 requires `sample_count == len(evidence_pages)` with no duplicate pages, and a book carries roughly
 30 matched lines per page, so pooling raw lines directly into a book estimate would break that
 invariant. Two-stage pooling keeps `sample_count` equal to the contributing page count and records

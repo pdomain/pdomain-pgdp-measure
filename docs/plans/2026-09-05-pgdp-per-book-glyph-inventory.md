@@ -2,7 +2,7 @@
 Status: shipped-gate-open
 Owner: CT
 Created: 2026-09-05
-Last verified: 2026-09-05
+Last verified: 2026-11-07
 Kind: plan
 ---
 
@@ -14,11 +14,11 @@ Kind: plan
 - **Status:** shipped-gate-open
 - **Owner:** CT
 - **Created:** 2026-09-05
-- **Last verified:** 2026-09-05
+- **Last verified:** 2026-11-07
 - **Provenance:** scoped on 2026-09-05, with coverage measured by harvesting all 665 accepted
   pages of the five aligned books, then shipped and re-measured the same day
 - **Disposition:** Shipped, with Gate 3 open. All eight tasks shipped and nine of ten gates pass;
-  Gate 3 fails on one book under a random sample. See "Gate 3 fails on one book". All three open
+  Gate 3 fails on two books under a random sample. See "Gate 3 fails". All three open
   decisions were taken by CT on 2026-09-05, and one of them forced a two-tier label design; see
   "Decisions taken". Review of the first corpus run overturned the scoping rule for what a word's
   ink runs are counted against; see "What the corpus run changed".
@@ -32,6 +32,11 @@ Kind: plan
 
 **Goal:** Cut a labelled glyph inventory from each aligned book's own scans, so synthesis can
 render arbitrary text in that book's actual type with per-character ground truth.
+
+Implementation and fixture behavior were checked against the code and repository tests on
+2026-11-07. Historical corpus measurements and visual reviews below were retained, not repeated.
+Gate 3 remains open. Current behavior is described in the
+[glyph architecture](../architecture/pgdp-glyph-inventory.md).
 
 ## What this is for
 
@@ -105,7 +110,8 @@ The same 665 accepted pages, harvested by `glyphs` under `blank-column-runs/v2` 
 | projectID67a80fde44d34 | 32 | 11,233 | 11,159 | 74 | 351 | 0.624 | 83 | 1.000 |
 
 207,328 glyphs from 665 pages in 8 minutes 10 seconds, 198,589 on the `transcribed` tier and
-8,739 on `recognized`. Every page of every book harvested; none was excluded.
+8,739 on `recognized`. Every accepted page in those reports was harvested; none of those pages
+was excluded from the harvest.
 
 **Furniture closed the digit gap, as measured.** `projectID609bfa0449bdf` yields 8 digits from
 body prose across 226 pages and 555 from its running heads and folios. Recognition confidence on
@@ -136,12 +142,13 @@ One inventory per book, from the same pinned inputs `typography` takes, so prove
 existing discipline rather than a new one.
 
 ```text
-pgdp-measure glyphs <corpus_root> --alignment a.json --profile p.json --out <dir>/
+pgdp-measure glyphs <corpus_root> --alignment a.json --profile p.json --output <dir>/
   manifest.json      pgdp-glyphs/v1: input hashes, method version, per-character
                      coverage per tier, quality tallies
   glyphs.jsonl       one row per glyph: character, label tier, page, line ordinal,
                      word ordinal, glyph ordinal, source-frame box, quality flags
-  atlas/U+0065.png   derived: every 'e' in the book on one grid
+  atlas/<tier>/<style>/U+0065-000.png
+                     derived: up to 1,024 samples per sheet, grouped by tier and style
 ```
 
 **Boxes are the contract; the atlas is a derived render that also ships.** The JSONL stays the
@@ -150,7 +157,7 @@ per decision 1, which makes the inventory usable without the corpus mounted.
 
 **One atlas per character, not per glyph.** A file per glyph is 10,000 files a book and three
 million across 286 projects. Per character is 50 to 90 files a book, and it is self-reviewing:
-open `U+0065.png` and every `e` in the book is on one grid, where a bad cut is obvious. That is
+open `atlas/transcribed/roman/U+0065-000.png` to compare up to 1,024 roman `e` samples on one sheet. That is
 the Gate 4 trick, built in rather than bolted on.
 
 ## Tasks
@@ -169,14 +176,15 @@ the Gate 4 trick, built in rather than bolted on.
   character counts, quality tallies, and the per-glyph JSONL.
 - [x] **4. The `glyphs` command.** Refuses a profile that does not hash to the alignment's
   recorded value, the same as `typography`.
-- [x] **5. The per-character atlas renderer,** deterministic and regenerable from the JSONL alone.
+- [x] **5. The per-character atlas renderer,** deterministic and regenerable from the JSONL,
+  manifest page table, and hash-checked source scans.
 - [x] **6. Reviewed fixtures** covering a separable word, a touching word, and a word whose
   letters split into the wrong count.
 - [x] **7. Harvest all five books, both tiers, and measure every gate below.**
 
 ## Acceptance gates
 
-All nine pass, measured on 2026-09-05 over the whole five-book corpus. Evidence is in
+Nine of ten gates pass in the recorded corpus reviews; Gate 3 remains open. Evidence is in
 `/workspaces/pdomain/.m15f-evidence/`: `gate-summary.json`, one `gates-<book>.json` per book, and
 the review sheets the label gates were read from.
 
@@ -190,7 +198,7 @@ the review sheets the label gates were read from.
 | 4b. Digit coverage | 20 per book | 83 to 1,879 per book | pass |
 | 5. Yield floor | 50 per harvested page | 68 to 308 | pass |
 | 3c. Label correctness, recognizer-admitted | 0.98 | 420 glyphs reviewed across two books on non-accepted pages, 5 wrong, 0.988 | pass |
-| 6. Atlas reproduction | exact | re-rendering from the JSONL reproduced all 900 sheets byte for byte | pass |
+| 6. Atlas reproduction | exact | re-rendering from the JSONL, manifest page table, and hash-checked scans reproduced all 900 sheets byte for byte | pass |
 | 7. Latent discipline | none | no manifest or row key claims font identity, point size, advance, side bearing or tracking | pass |
 
 ## Gate 3 fails
@@ -296,6 +304,10 @@ proofer's unresolved query `[**mark place in <sc>?]` and no markup, so those 11 
 letterforms still sit in lowercase buckets labelled roman. Only review finds that class.
 
 ## Every page is harvested, not only the accepted ones
+
+Current code visits only pages present in the alignment report. It checks non-accepted pages
+only when `--geometry` is supplied; without geometry, they are skipped. The whole-book counts
+below belong to the historical run, whose reports included those pages.
 
 **Page acceptance turned out to be a poor proxy for whether one line bound to the right text.**
 Measured against the recognizer over three books, lines excluded only for alignment score agree

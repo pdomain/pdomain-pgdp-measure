@@ -1,7 +1,19 @@
 # Measuring a PGDP Corpus
 
+## Agent Index
+
+- **Kind:** process
+- **Status:** active
+- **Owner:** CT
+- **Last verified:** 2026-11-07
+- **Provenance:** checked against the CLI parser, measurement code, schemas, and repository tests.
+- **Read when:** running the five measurement commands on a local corpus.
+
 Five subcommands take a local PGDP corpus to a labelled glyph inventory, each one reading the
 report the previous one wrote.
+
+Implementation and fixture behavior were checked on 2026-11-07. Historical corpus measurements
+below were retained; this check did not repeat the corpus runs or visual label review.
 
 ```text
 rank  ->  profile  ->  align  ->  typography
@@ -19,8 +31,8 @@ gated on producing byte-identical output across two runs.
 | `typography <corpus_root>` | Measure font-free typographic observables from an alignment |
 | `glyphs <corpus_root>` | Cut a per-book labelled glyph inventory from an alignment |
 
-Run them from the corpus root, and always write reports outside it. Each command refuses an output
-path inside the corpus.
+Run them from a working directory outside the corpus, and pass the corpus root as the positional
+argument. Each command refuses an output path inside the corpus.
 
 ## Rank a local PGDP corpus
 
@@ -83,7 +95,15 @@ residuals, and exclusion evidence. Accepted alignments require a single-column
 page and four to 80 nonblank source lines eligible for matching. Matched
 operations must cover at least 90 percent of those lines. Normalized cost must
 be at most 0.22, and uniqueness margin at least 0.15. Confidence is always null
-with `confidence_kind` set to `uncalibrated` in version 1.
+with `confidence_kind` set to `uncalibrated` in `pgdp-alignment/v3`.
+
+Exclusions cover missing or changed inputs, malformed F2 controls, unusable ink
+bands, implausible line counts, persistent gutters, probable columns, tables,
+illustrations, borders, and high foreground ratios. An excluded or proposed page
+is evidence for review, not an accepted mapping. Candidate boxes remain in the
+original scan frame. Alignment does not infer baselines, reading order across
+columns, typography, font identity, semantics, rotation, or dewarping, and it
+does not use OCR output as verification.
 
 ## Measure typography from an alignment
 
@@ -100,15 +120,6 @@ from the accepted pages of a `pgdp-alignment/v3` report, then pools them per
 page, per book, and per page class into a deterministic `pgdp-typography/v1`
 report.
 
-The atlas is a render of the JSONL, not a second source. One grid per
-character per tier holds every sample of that character in the book, sharded at
-1,024 cells a sheet, so opening `atlas/transcribed/U+0065-000.png` shows every
-`e` at once and a bad cut is obvious next to its neighbours. Cells are the
-character's 95th-percentile extent and nothing is scaled; a larger glyph is
-centre-cropped and its sheet records how many that happened to. Re-rendering
-from the JSONL reproduces every sheet byte for byte, which is what makes the
-atlas safe to ship. `--no-atlas` skips the render.
-
 The command refuses to run unless the profile hashes to the value the alignment
 report recorded, so the two inputs are provably the pair that produced each
 other. On every page it rebuilds the same ink mask the alignment extractor
@@ -117,7 +128,7 @@ built and checks that the mask reproduces each matched candidate's recorded
 Otsu threshold equals the recorded one. A page that fails is excluded as
 `mask_mismatch` carrying both values.
 
-Every value is a pixel count in the `source` frame with `confidence` null and
+Distances use pixels in the `source` frame; skew slope is dimensionless. Estimates carry `confidence` null and
 `confidence_kind` set to `uncalibrated`. The report names nothing the design
 treats as latent: no font identity, nominal point size, advance, side bearing,
 native word-space width, tracking, kerning, leading, or physical margin.
@@ -136,14 +147,6 @@ and per-word rows are emitted only for the first `--evidence-pages` measured
 pages of each book, which keeps a five-book run from emitting roughly 150,000
 word records.
 
-Exclusions cover missing or changed inputs, malformed F2 controls, unusable ink
-bands, implausible line counts, persistent gutters, probable columns, tables,
-illustrations, borders, and high foreground ratios. An excluded or proposed page
-is evidence for review, not an accepted mapping. Candidate boxes remain in the
-original scan frame. The command does not infer baselines, reading order across
-columns, typography, font identity, semantics, rotation, or dewarping, and it
-does not use OCR output as verification.
-
 ## Cut a glyph inventory
 
 ```bash
@@ -158,7 +161,8 @@ pgdp-measure glyphs /path/to/pgdp-corpus \
 directory: `glyphs.jsonl`, one row per glyph, and `manifest.json`, the
 provenance and per-character coverage. The JSONL is the authority.
 
-Every page of the book is harvested, not only the pages alignment accepted.
+The command visits every page in the alignment report when `--geometry` is supplied,
+including pages alignment did not accept. It cannot harvest pages absent from that report.
 Acceptance is a page-level judgement and a poor proxy for whether one line bound
 to the right text: measured over three books, lines excluded only for alignment
 score agree with the recognizer about as well as accepted ones, at 0.887 to
@@ -167,6 +171,10 @@ to 0.683. So every line is admitted only when the recognizer reads at
 least four of every five of its transcription words inside its own box. That
 needs `--geometry`; without it, non-accepted pages are skipped and accepted ones
 go unchecked as before.
+
+For a whole-book inventory, set `rank --pages-per-project` high enough to include all the book's
+pages, then profile and align that selection. `profile --whole-book` alone leaves the emitted
+selection unchanged.
 
 The check matters most on accepted pages, where nothing else looks. A line whose
 candidate box was matched to the wrong source line still reconciles by word
@@ -294,12 +302,12 @@ the word box: a word box is tight to its own ink, so its tallest and lowest
 glyphs always touch it.
 
 The atlas is a render of the JSONL, not a second source. One grid per
-character per tier holds every sample of that character in the book, sharded at
-1,024 cells a sheet, so opening `atlas/transcribed/U+0065-000.png` shows every
-`e` at once and a bad cut is obvious next to its neighbours. Cells are the
+character per tier and style holds its samples, sharded at
+1,024 cells a sheet. Opening `atlas/transcribed/roman/U+0065-000.png` shows
+up to 1,024 roman `e` samples beside their neighbours. Cells are the
 character's 95th-percentile extent and nothing is scaled; a larger glyph is
 centre-cropped and its sheet records how many that happened to. Re-rendering
-from the JSONL reproduces every sheet byte for byte, which is what makes the
+from the JSONL, manifest page table, and hash-checked source scans reproduces every sheet byte for byte, which makes the
 atlas safe to ship. `--no-atlas` skips the render.
 
 The command refuses to run unless the profile hashes to the value the alignment
@@ -349,9 +357,10 @@ against them as `normal_recto`, `normal_verso`, `chapter_opening`, or `unknown`.
 A book whose first band wanders gets no templates and every page classifies
 `unknown`.
 
-The class decides which bands `align` ignores. A normal page's first band
-is its running head, which is printed but deleted from F2, so no candidate is
-emitted for it. Every other class suppresses nothing. Front matter and plates
+The class decides which bands `align` ignores. On a normal page, the first band
+at or below the head window's upper edge is treated as its running head.
+That band and every band above it are suppressed, including any specks above the head.
+Every other class suppresses nothing. Front matter and plates
 have no class of their own because the corpus offers no discriminator for them.
 
 ### `align <corpus_root>`
@@ -364,7 +373,7 @@ corpus scans. Those scans must still be available and match the supplied M15a
 | Flag | Meaning |
 |------|---------|
 | `--profile PATH` | Read this required `pgdp-profile/v2` JSON report |
-| `--output PATH` | Write the required `pgdp-alignment/v1` JSON report here; it must be outside the corpus root, differ from `--profile`, and not name a directory |
+| `--output PATH` | Write the required `pgdp-alignment/v3` JSON report here; it must be outside the corpus root, differ from `--profile`, and not name a directory |
 
 ### `typography <corpus_root>`
 

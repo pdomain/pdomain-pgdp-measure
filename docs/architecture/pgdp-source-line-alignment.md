@@ -6,7 +6,7 @@
 - **Status:** active
 - **Owner:** CT
 - **Created:** 2026-09-06
-- **Last verified:** 2026-09-06
+- **Last verified:** 2026-11-07
 - **Provenance:** verified from shipped code, schemas, tests, and the measured five-book corpus runs
 - **Disposition:** Current truth promoted from the implemented M15b source-line alignment,
   fragmented-band correction, and page-classification plans.
@@ -20,6 +20,11 @@
 `align` conservatively aligns lossless F2 source lines with source-frame scan line candidates
 on eligible single-column PGDP pages. It reads a `pgdp-profile/v2` report and writes a separate
 `pgdp-alignment/v3` report. It keeps rectification and typographic fitting out of scope.
+
+Implementation and fixture behavior were checked against the code and repository tests on
+2026-11-07. Corpus counts and visual precision below record earlier runs; this check did not
+repeat them. The admission-floor calibration remains unresolved in the
+[intent map](../context/intent-map.md).
 
 ## Input and output
 
@@ -175,11 +180,17 @@ pages of the same five books, the review set over-represents table-like structur
 book.
 
 The 70 percent coverage gate was withdrawn on 2026-08-31 and replaced by per-book admission. A book
-is admitted to synthesis when `align`, run with the profile's `--whole-book` mode, yields at
-least 30 accepted pages (`MINIMUM_ACCEPTED_PAGES_PER_BOOK` in
-`src/pdomain_pgdp_measure/alignment_review.py`). This threshold is an uncalibrated seed: nothing
-downstream yet states how many pages a per-book typography fit needs, so corpus review is expected
-to recalibrate it once one does.
+is admitted to synthesis when its alignment report contains at least 30 accepted pages
+(`MINIMUM_ACCEPTED_PAGES_PER_BOOK` in
+`src/pdomain_pgdp_measure/alignment_review.py`). The code comment still calls this threshold an
+uncalibrated seed. The [typography architecture](pgdp-font-free-typography.md) records a later
+calibration, but this repo has no test reproducing that measurement. The floor remains 30;
+its calibration status needs the decision recorded in the [intent map](../context/intent-map.md).
+
+Admission counts only pages present in the alignment report. To assess a whole book, rank all its
+pages by setting `--pages-per-project` high enough before profiling and aligning. The
+`profile --whole-book` flag widens template fitting and pooling, but still emits only ranked pages;
+it does not widen the page selection that `align` receives.
 
 Eligible-page coverage remains a reported per-book statistic. Nothing fails on it. The corpus-wide
 gate keeps its other two rules: accepted-line precision must be at least 98 percent, and zero
@@ -234,7 +245,8 @@ geometry it builds on).
 It does not read multi-column reading order. A page carrying a probable column gutter is excluded,
 not reordered. It does not transcribe or verify against OCR text. It does not identify typefaces,
 fit fonts, or infer kerning, tracking, or word spacing. It does not read folio digits or
-running-head text; page classification uses only band position. It does not use adjacent pages:
+running-head text; page classification uses band geometry and trailing file-name digits to label
+recto and verso. It does not use adjacent pages:
 every measurement comes from one page's own geometry.
 
 ## Evidence

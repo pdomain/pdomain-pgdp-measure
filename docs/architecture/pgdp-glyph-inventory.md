@@ -6,7 +6,7 @@
 - **Status:** active
 - **Owner:** CT
 - **Created:** 2026-09-06
-- **Last verified:** 2026-09-06
+- **Last verified:** 2026-11-07
 - **Provenance:** verified from shipped code, schemas, tests, and the measured five-book corpus
   runs, with Gate 3 recorded as failing
 - **Disposition:** Current truth promoted from the M15f per-book glyph inventory plan, which
@@ -23,6 +23,10 @@ text, alignment gives line boxes, and word-level typography gives word boxes, bu
 this cuts a box around one letter and names it.
 
 ## Gate 3 is open, and label correctness fails on two of five books
+
+Implementation and fixture behavior were checked against the code and repository tests on
+2026-11-07. Corpus counts and visual label scores below record earlier runs; this check did not
+repeat them or close Gate 3.
 
 **The milestone shipped with an acceptance gate failing.** Gate 3 measures how often a glyph on
 the `transcribed` label tier carries the right character. The floor is 0.98. The measured pooled
@@ -55,13 +59,13 @@ What remains unfinished is on the [remaining-work list](../roadmap.md).
 ## What the command writes
 
 ```text
-pgdp-measure glyphs <corpus_root> --alignment a.json --profile p.json --out <dir>/
+pgdp-measure glyphs <corpus_root> --alignment a.json --profile p.json --output <dir>/
   manifest.json           pgdp-glyphs/v1: input hashes, method versions, per-character
                           coverage per tier, page table, quality and reject tallies
   glyphs.jsonl            one row per glyph: character, label tier, page, line ordinal,
                           word ordinal, glyph ordinal, source-frame box, quality flags
   atlas/<tier>/<style>/U+0065-000.png
-                          derived: every roman lowercase 'e' in the book on one grid
+                          derived: up to 1,024 roman lowercase 'e' samples per sheet
 ```
 
 The command takes the same pinned inputs `typography` does: a `pgdp-alignment/v3` report and
@@ -75,8 +79,9 @@ accepted pages only.
 **The JSONL is the authority, and the atlas is a derived render that also ships.** `glyphs.jsonl`
 is small and re-cuttable from the corpus. The atlas is regenerated from the JSONL rows and
 committed alongside it, so the inventory is reviewable without the corpus mounted: open one
-character's grid and every glyph the book yields for it sits on one sheet, where a bad cut stands
-out from its neighbours. Gate 6 confirmed the atlas re-renders byte for byte from the rows alone.
+character's grids and its glyphs sit on sheets of at most 1,024 cells, where a bad cut stands
+out from its neighbours. Gate 6 confirmed byte-identical atlas regeneration from the rows,
+manifest page table, and hash-checked source scans.
 
 The atlas path names its tier, style, and character: `atlas/transcribed/small_caps/U+0065-000.png`
 holds capital `E` forms transcribed as small capitals, and `atlas/transcribed/roman/U+0065-000.png`
@@ -133,6 +138,11 @@ books it also raised the yield, because a word whose punctuation stands cleanly 
 instead of being refused for a false mismatch.
 
 ## Every page is harvested, not only the pages alignment accepted
+
+With `--geometry`, the command visits every page present in the alignment report. It cannot
+harvest pages absent from that report. Without geometry, it visits only accepted pages.
+Whole-book harvesting requires ranking all the book's pages before profiling and aligning;
+`profile --whole-book` alone widens pooling and templates, not the emitted selection.
 
 Early in the milestone, only a book's alignment-accepted pages were harvested: 665 pages across
 the five books. **Page acceptance turned out to be a poor proxy for whether one line bound to the
@@ -203,8 +213,8 @@ on — and both coverage counts and the atlas are keyed by it, so a small-capita
 `recognized` tier, where no style source can be trusted at all.
 
 Measured against each book's F2-wide styled character share, styled text turned out to be a small
-fraction of what actually gets cut, because the inventory draws only from accepted, reconciled,
-separable words, and most styled text in these books sits in front matter the alignment never
+fraction of what got cut in the accepted-pages-only measurement, because that run drew from
+accepted, reconciled, separable words. Most styled text sat in front matter the alignment never
 accepted. Styled glyphs run from none up to about 5.7 percent of one book's `transcribed` glyphs.
 This does not catch small-capital text PGDP leaves unmarked: one page in one book prints a phrase
 in small capitals with an unresolved proofer's query and no markup, and those letterforms still
@@ -246,7 +256,7 @@ to 7.7 units apart. That gap is what the flag reads as signal.
 | 4. Lowercase coverage | all 26 letters present in every book | pass |
 | 4b. Digit coverage | 128 to 2,837 per book, against a floor of 20 | pass |
 | 5. Yield floor | 68 to 308 glyphs per harvested page, against a floor of 50 | pass |
-| 6. Atlas reproduction | every sheet re-rendered byte for byte from the JSONL alone | pass |
+| 6. Atlas reproduction | every sheet re-rendered byte for byte from the rows, manifest page table, and source scans | pass |
 | 7. Latent discipline | zero violations — no manifest or row field claims font identity, point size, advance, side bearing, or tracking | pass |
 
 Gate 3 is reviewed by eye at a legible render scale, not by an automated check: an earlier pass at
@@ -344,7 +354,7 @@ is the bottleneck this inventory sits behind; it cannot be run on a book that ha
   `872ac6f`, `7ecb71e`, `66d00d2`, and `36b9a77`.
 - Corpus verification: 266,549 glyphs harvested from 1,367 of 1,385 pages across the five aligned
   books, deterministic across two full runs with the atlas included, atlas re-rendered byte for
-  byte from the JSONL on all sheets, and Gate 3 measured at 0.978 pooled label correctness on the
+byte from the rows, manifest page table, and source scans on all sheets, and Gate 3 measured at 0.978 pooled label correctness on the
   `transcribed` tier against a floor of 0.98.
 - Verified: state recorded on 2026-09-06 in
   `docs/handoff/2026-09-06-140411-m15f-gate3-open-and-five-quality-flags.md`, and promoted here the

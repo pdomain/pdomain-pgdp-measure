@@ -6,7 +6,7 @@
 - **Status:** active
 - **Owner:** CT
 - **Created:** 2026-08-24
-- **Last verified:** 2026-09-06
+- **Last verified:** 2026-11-07
 - **Provenance:** verified from shipped code, schema, tests, commits, and corpus runs during the
   2026-08-24 docgraph migration; re-verified on 2026-09-06 against the shipped page-classification
   work that moved the report to `pgdp-profile/v2`
@@ -20,6 +20,9 @@
 coordinates and keeps failures as evidence instead of numeric zeroes. Its
 `--whole-book` mode also fits each book's page templates and classifies every
 page against them.
+
+Implementation and fixture behavior were checked against the code and repository tests on
+2026-11-07. Corpus counts below record earlier runs; this check did not repeat them.
 
 ## Input validation preserves ranking and scan evidence
 
@@ -59,9 +62,9 @@ contributes height but has no pitch sample.
 By default the profiler measures only the pages `rank` selected. The `--whole-book` flag
 measures every `*.png` file directly under each ranked project directory instead, in sorted order,
 while the report still emits only the ranked pages. Pooled estimates and page templates are fit
-over every measured page, and each project records how many pages were measured against how many
-were emitted, so a reader can see that book-level statistics rest on more evidence than the report
-lists.
+over every measured page. Each pooled estimate records its contributing page names and sample
+count, while the project's page list contains only emitted pages. The report has no separate
+total measured-page count.
 
 This keeps per-page processing unchanged. The profiler still measures one full-resolution image at
 a time; `--whole-book` only widens which pages that loop visits.
@@ -82,10 +85,10 @@ discriminator of their own in this corpus, so they also fall to `unknown`. A boo
 position is not steady enough to trust yields no templates, and every one of its pages is
 `unknown`.
 
-`unknown` suppresses nothing. Only `normal_recto` and `normal_verso` pages, and only when their
-first band falls inside the book's head window, name a furniture band. `pgdp-alignment/v3` reads
-that list and drops those bands before candidate extraction, so a running head or folio never
-becomes a line candidate. See [PGDP source-line
+`unknown` suppresses nothing. Only `normal_recto` and `normal_verso` pages name furniture bands.
+The classifier skips bands above `center - window` when locating the head, then requires that
+head to fall inside the book's head window. It names every band through the head as furniture.
+`pgdp-alignment/v3` drops those bands before candidate extraction. See [PGDP source-line
 alignment](pgdp-source-line-alignment.md#the-three-band-identification-fixes-are-the-substance-of-v3)
 for how the aligner uses the class and for the head-band-selection fix that followed it.
 
@@ -120,7 +123,9 @@ including the later band-identification fixes that raised accepted pages further
 
 Truth classes distinguish observed, derived, and pooled values. Every estimate
 states its unit, coordinate frame, method, sample count, evidence, and
-exclusions. Confidence is `null`, and `confidence_kind` is `uncalibrated`.
+exclusions. Estimate confidence is `null`, and `confidence_kind` is `uncalibrated`.
+Page classification separately records `page_class_confidence`: a residual-based score between
+zero and one for classified pages, and `null` for `unknown` pages. It is not a calibrated probability.
 
 Project estimates pool eligible page values with the median and median absolute
 deviation. Pooling does not remove outliers. Exclusions are metric-specific. A
@@ -153,7 +158,8 @@ The profiler does not detect columns, interpret semantics, measure text
 alignment, infer fonts or styles, or choose renderer settings. Those tasks need
 additional evidence and separate contracts.
 
-Page classification is geometry only. It reads no folio digit and no running-head text, and it
+Page classification uses geometry and file-name digits to label the fitted sides. It reads no
+printed folio digit and no running-head text, and it
 does not read adjacent pages. A book whose type page is not steady enough to trust yields no
 templates, and a page whose offset falls in the trough between the head window and the
 chapter-opening sink stays `unknown` rather than being forced into a class.
