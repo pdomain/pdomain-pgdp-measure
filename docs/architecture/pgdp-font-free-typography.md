@@ -56,6 +56,13 @@ stroke width, skew slope, word runs, and a per-word ink box. Every value stays i
 coordinate frame, the same unrectified raster frame the profile and alignment reports use.
 Distances use pixels; skew slope is dimensionless.
 
+One row of ink sits just past the baseline and x-height lines on 11 to 16 percent of ink columns,
+most on the book with the smallest x-height, 10 to 12 px. This is round-letter overshoot, not
+estimator bias. The rate is the same at both lines, and moving the baseline down one row would put
+78 percent of columns off the line instead of 13. The synthetic fixtures show zero signed error only
+because they are flat bars with no round letters, so they cannot show this effect. Do not "fix" the
+baseline to absorb it.
+
 This is deliberately font-free. The command imports no font module, opens no font file, and
 renders no text. That discipline is the point of the slice, not an incidental limit. The
 milestone's eventual target is inverse rendering: ranking candidate fonts by re-rendering a known

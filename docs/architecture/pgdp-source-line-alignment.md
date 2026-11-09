@@ -56,7 +56,9 @@ reproduces the normalized text exactly.
 
 Local `/* ... */` spans and cross-page `/# ... #/` spans get a stable identifier from their block
 kind, opening page, and opening byte offset. An open continued block keeps that identity on every
-page it spans. A page whose control markers are unmatched, nested, or overlapping stays diagnosed
+page it spans. This is why pgdp-measure keeps its own document-wide F2 parser: the
+`pdomain-book-contracts` parser reads one page at a time, so it flags a continued `/# #/` block as
+unclosed. A page whose control markers are unmatched, nested, or overlapping stays diagnosed
 but does not lose its other lines. Blank visible lines stay in the source record but drop out of the
 sequence the aligner matches, so their absence is explicit rather than silent.
 
