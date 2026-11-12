@@ -136,7 +136,7 @@ worse:
 
 Neither the alignment wire version nor the profile wire version changed for this fix; only the two
 method identifiers moved, to `source-frame-components/v4` and `first-band-templates/v3`. See
-`docs/context/decisions.md`, "Geometry alone decides what a band is, and three tests share the job."
+`pdomain-ocr-synth` `docs/context/decisions.md`, "Geometry alone decides what a band is, and three tests share the job."
 
 ## The dynamic-programming alignment is deterministic
 
@@ -196,7 +196,7 @@ it does not widen the page selection that `align` receives.
 
 Eligible-page coverage remains a reported per-book statistic. Nothing fails on it. The corpus-wide
 gate keeps its other two rules: accepted-line precision must be at least 98 percent, and zero
-accepted pages may be declared complex. See
+accepted pages may be declared complex. See `pdomain-ocr-synth`
 `docs/specs/2026-08-31-pgdp-whole-book-yield-gate-design.md`.
 
 ## Every reviewed page reconciles into one of four counts
@@ -228,8 +228,8 @@ The final measurement judged 760 matched lines across a stratified sample of 26 
 from all five books, all correct, against the 0.98 gate. No accepted page was declared complex,
 and all five books cleared the 30-page admission minimum with 713 accepted pages between them.
 This ledger was built by a model reading rendered line crops against each source line, at the
-owner's direction, not signed off row by row by a person. See `docs/context/decisions.md` and
-`docs/context/current-state.md` for the full run-by-run detail.
+owner's direction, not signed off row by row by a person. The run-by-run detail is in
+`pdomain-ocr-synth` at `docs/context/decisions.md` and `docs/context/current-state.md`.
 
 An earlier measurement in the same sequence, after the two page-template fitting fixes but before
 the three band-identification fixes, reported 665 accepted pages and precision 0.9974 over 781
@@ -271,12 +271,12 @@ every measurement comes from one page's own geometry.
 - Plans: retired on 2026-09-06 with tombstones in decisions (the decision log in `pdomain-ocr-synth`);
   they were `2026-08-23-pgdp-source-line-alignment`,
   `2026-08-31-pgdp-fragmented-band-correction`, and `2026-08-31-pgdp-page-classification`.
-- Specs: `docs/specs/2026-08-23-pgdp-source-line-alignment-design.md`,
+- Specs, in `pdomain-ocr-synth`: `docs/specs/2026-08-23-pgdp-source-line-alignment-design.md`,
   `docs/specs/2026-08-31-pgdp-whole-book-page-templates-design.md`, and
   `docs/specs/2026-08-31-pgdp-whole-book-yield-gate-design.md`.
 - Corpus verification: five whole-book runs over 1,385 pages measured deterministic replay,
   accepted-page counts per book, and accepted-line precision at three stages, ending at 1.0000
   over 760 rows from 26 pages across five books with 713 accepted pages and zero accepted
   declared-complex pages.
-- Verified: measured counts recorded in `docs/context/current-state.md` and
-  `docs/context/decisions.md`, promoted on 2026-09-06.
+- Verified: measured counts recorded in `pdomain-ocr-synth` at `docs/context/current-state.md`
+  and `docs/context/decisions.md`, promoted on 2026-09-06.

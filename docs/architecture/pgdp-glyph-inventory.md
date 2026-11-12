@@ -6,27 +6,35 @@
 - **Status:** active
 - **Owner:** CT
 - **Created:** 2026-09-06
-- **Last verified:** 2026-11-07
+- **Last verified:** 2026-11-12
 - **Provenance:** verified from shipped code, schemas, tests, and the measured five-book corpus
-  runs, with Gate 3 recorded as failing
-- **Disposition:** Current truth promoted from the M15f per-book glyph inventory plan, which
-  shipped with Gate 3 open.
-- **Promotes:** `2026-09-05-pgdp-per-book-glyph-inventory` plan, status shipped-gate-open.
+  runs. The 2026-09-07 Gate 3 recheck in `pdomain-ocr-synth` is folded in as written. This pass
+  did not repeat the corpus runs or the crop reading.
+- **Disposition:** Current truth. The per-book glyph inventory plan was retired on 2026-11-12.
+  Gate 3 stays open: after the small-caps correction, two books are still under the floor.
+- **Promotes:** `2026-09-05-pgdp-per-book-glyph-inventory` plan, retired 2026-11-12. Tombstone:
+  `docs/context/decisions.md`.
 - **Read when:** building or consuming the glyph inventory, deciding whether its labels are
   trustworthy enough for a task, or asking what synthesis can render in a book's own type.
 - **Search terms:** glyph inventory, per-book, harvest, atlas, transcribed, recognized, quality
   flags, Gate 3, M15f.
 
 `glyphs` cuts a labelled, per-character glyph inventory from one aligned book's own scans.
-It is the first thing in this pipeline that produces glyph-level ground truth: PGDP gives line
-text, alignment gives line boxes, and word-level typography gives word boxes, but nothing before
+It is the first thing in this pipeline that produces glyph-level ground truth. PGDP gives line
+text. Alignment gives line boxes. Word-level typography gives word boxes. But nothing before
 this cuts a box around one letter and names it.
 
 ## Gate 3 is open, and label correctness fails on two of five books
 
+Gate 3 stays open.
+
 Implementation and fixture behavior were checked against the code and repository tests on
-2026-11-07. Corpus counts and visual label scores below record earlier runs; this check did not
-repeat them or close Gate 3.
+2026-11-07.
+
+Corpus counts below record earlier runs.
+
+The label reading was not repeated on 2026-11-12. What changed that day is the record of the
+2026-09-07 recheck, which this document had not yet absorbed.
 
 **The milestone shipped with an acceptance gate failing.** Gate 3 measures how often a glyph on
 the `transcribed` label tier carries the right character. The floor is 0.98. The measured pooled
@@ -42,19 +50,43 @@ eye at a legible scale.
 | projectID67a80fde44d34 | 12 | **0.943** | **fail** |
 | pooled | 23 | **0.978** | **fail** |
 
-Three books pass comfortably. Two do not, and the pooled figure misses the floor by two tenths of
-a point.
+Three books pass on that sheet. Two do not. The sheet's pooled score, 0.978, misses 0.98 by 0.002.
+That is the recorded sheet. It is not the last word on the pool.
 
-**Filtering is not the gate passing.** Dropping every glyph the five quality flags below mark
-takes the pooled figure to 0.994, with every book over the floor, for a cost of 23 of the 1,050
-sampled glyphs and six false positives. That is what one line of filtering buys a consumer. It is
-not a measurement of the inventory as shipped, and treating it as the gate result would weaken the
-gate. Both numbers are real. Keep them apart: **0.978 pooled is the gate result, and it fails.
-0.994 pooled is what filtering buys, and it is a separate, optional step.**
+**Filtering is not the gate passing.** Dropping every glyph the five quality flags mark takes the
+pooled figure to 0.994. Every book is over the floor. The cost is 23 of the 1,050 sampled
+glyphs and six false positives. That is what filtering the original sheet buys. It is not the gate
+result.
 
-See "Two measured ceilings mark where geometry stops" for why the two failing books resist a fix,
-and "Six reviewed errors survive filtering" for what even the filtered inventory still gets wrong.
+The recheck below counts three small-caps marks as correct. The pool then reads 0.9810 and
+clears 0.98. The two books still fail, at 0.9762 and 0.9429. Gate 3 is judged per book.
+
+See "Two measured ceilings mark where geometry stops" for the geometric limits. See "Six marks
+survive filtering" for what a later crop read found in the unflagged cells.
+
 What remains unfinished is on the [remaining-work list](../roadmap.md).
+
+A recheck on 2026-09-07 matched those same 23 cells by page and box. It is written up in
+`pdomain-ocr-synth` at `docs/research/2026-09-07-gate3-recheck-on-the-713-page-alignment.md`, and
+that note was checked again on 2026-11-07. This repository did not redraw the sample.
+
+Three of the 23 marks are correct small-caps records. The review sheet showed the character and
+hid `label_style`, so a small-capital N stored as character `n` was marked wrong.
+
+The three cells
+are `n16` (the N of HERRING, page `283.png`, `projectID603d7d5e04ca0`), `e8` (the E of MASTER,
+page `130.png`), and `e12` (the E of SETON, page `158.png`). Every glyph in those three words
+carries `label_style: small_caps`.
+
+Gate 3 is judged per book, so both books still fail. Counting the three as correct moves that book
+from 0.9619 to 0.9762, and the pool from 0.9781 to 0.9810. `projectID67a80fde44d34` stays at
+0.9429, because its 12 marks are all roman.
+
+Re-running the measurement on the later alignment does not remove the 23. All of them survive the
+band-identification fixes.
+
+The recheck is not a fresh sample from the 713-page pool. A person
+has not read a new draw.
 
 ## What the command writes
 
@@ -70,23 +102,29 @@ pgdp-measure glyphs <corpus_root> --alignment a.json --profile p.json --output <
 
 The command takes the same pinned inputs `typography` does: a `pgdp-alignment/v3` report and
 the `pgdp-profile/v2` profile it recorded. It refuses to start unless the profile hashes to the
-value the alignment report names, and it refuses an alignment covering more than one book, because
+value the alignment report names. It refuses an alignment covering more than one book, because
 x-heights run 10 to 18 px across the five corpus books and a pooled inventory would mix sizes.
-`--geometry` is optional and unlocks the `recognized` label tier and the recognizer's admission
-check on non-accepted pages; without it the command still runs, on the `transcribed` tier and
+`--geometry` is optional. It enables the `recognized` label tier and the recognizer's admission
+check on non-accepted pages. Without it the command still runs, on the `transcribed` tier and
 accepted pages only.
 
 **The JSONL is the authority, and the atlas is a derived render that also ships.** `glyphs.jsonl`
 is small and re-cuttable from the corpus. The atlas is regenerated from the JSONL rows and
-committed alongside it, so the inventory is reviewable without the corpus mounted: open one
-character's grids and its glyphs sit on sheets of at most 1,024 cells, where a bad cut stands
+committed alongside it, so the inventory is reviewable without the corpus mounted. Open one
+character's grids, and its glyphs sit on sheets of at most 1,024 cells. A bad cut stands
 out from its neighbours. Gate 6 confirmed byte-identical atlas regeneration from the rows,
 manifest page table, and hash-checked source scans.
 
 The atlas path names its tier, style, and character: `atlas/transcribed/small_caps/U+0065-000.png`
 holds capital `E` forms transcribed as small capitals, and `atlas/transcribed/roman/U+0065-000.png`
 holds ordinary lowercase `e`. A character too large for one sheet gets more than one, hence the
-`-000` ordinal.
+`-000` ordinal. The pre-commit hook refuses a file over 1000 kB. The committed five-book sheets
+pass that hook. Each file is one character and one style.
+
+This repository commits atlases for the five aligned books. The glyph plan estimated about 16
+million glyphs if atlases were shipped for the 286 projects then in view. The extraction check
+later saw the corpus grow from 330 projects to 390. No decision commits atlases past those five
+books.
 
 ## Two label tiers never mix, and each names its own source
 
@@ -96,7 +134,7 @@ them the same way.
 **`transcribed` comes from a word on a line reconciled against PGDP's F2 transcription.** The
 character is a human proofer's. This is the tier a model should train characters on.
 
-**`recognized` comes from a word a DocTR read finds outside every matched line box** — the
+**`recognized` comes from a word a DocTR read finds outside every matched line box.** Those are the
 running heads and folios that PGDP does not transcribe at all. Proofers strip that furniture from
 F2 entirely: across all five aligned books, **not one bare page-number line appears in the
 transcription**. Furniture ink therefore has no human label anywhere in this corpus, and the only
@@ -104,37 +142,43 @@ label it can carry is a machine read.
 
 Both tiers exist because that gap is real and each book has it. The safety property this design
 gives is not "no OCR labels appear in the inventory." It is that **every row names which kind of
-label it carries**, so a consumer can take digit samples from `recognized` while training
+label it carries**. A consumer can take digit samples from `recognized` while training
 characters only on `transcribed`, and never accidentally mix the two.
 
-`glyph_furniture.py` implements the `recognized` tier as `words-outside-matched-lines/v1`: a
+`glyph_furniture.py` implements the `recognized` tier as `words-outside-matched-lines/v1`. A
 recognized word belongs to a matched line only when at least half its own area falls inside that
-line's box, checked after confirming the geometry record's page hash matches the alignment's
-scanned page. Gate 3b measured this tier at 340 reviewed furniture glyphs across two books, zero
+line's box. The check runs after confirming the geometry record's page hash matches the alignment's
+scanned page.
+
+Gate 3b measured this tier at 340 reviewed furniture glyphs across two books, zero
 wrong.
 
 ## The cutting rule counts every printed mark, and labels only the letters and digits
 
 A word is cut by splitting its box at blank columns. Each resulting ink run is matched, in order,
 against one position in the word. When the run count equals the position count, every run is a
-known character and the word is separable; otherwise nothing is cut, and the word's rejection
+known character and the word is separable. Otherwise nothing is cut, and the word's rejection
 reason is recorded instead. The shipped rule, `blank-column-runs/v2` in `glyph_cut.py`, counts
-**every printing character** — letters, digits, and punctuation alike — against the runs, but
-only labels the alphanumerics. A run that lands on a punctuation mark is cut and discarded rather
+**every printing character** against the runs, but only labels the alphanumerics. Letters, digits,
+and punctuation alike are printing characters. A run that lands on a punctuation mark is cut and discarded rather
 than shifting every later position onto the wrong letter.
 
 **The first version of this rule counted only alphanumerics, and it was wrong.** A comma or an
 apostrophe makes its own ink run as readily as a letter does. Counting letters alone let a word
-match by coincidence: one mark standing alone on a line adds a run the letters-only count does not
-expect, while one pair of touching letters removes a run the same count does expect, and the two
-errors cancelled. Measured over four books on 40 pages each, that coincidence covered 1.4 to 15.4
-percent of the words the letters-only rule called separable, and in none of those 927 cases did
-the ink actually carry one run per printed character. Visual review of 210 glyphs in one book
+match by coincidence. One mark standing alone on a line adds a run the letters-only count does not
+expect. One pair of touching letters removes a run the same count does expect. The two
+errors cancelled.
+
+Measured over four books on 40 pages each, that coincidence covered 1.4 to 15.4
+percent of the words the letters-only rule called separable. In none of those 927 cases did
+the ink carry one run per printed character.
+
+Visual review of 210 glyphs in one book
 found seven wrong labels from exactly this cause, among them a `t` and an apostrophe both labelled
 `n`.
 
-Counting every printing character removes that coincidence, and in three of the four measured
-books it also raised the yield, because a word whose punctuation stands cleanly apart now cuts
+Counting every printing character removes that coincidence. It also raised the yield in three of
+the four measured books. That is because a word whose punctuation stands cleanly apart now cuts
 instead of being refused for a false mismatch.
 
 ## Every page is harvested, not only the pages alignment accepted
@@ -144,27 +188,31 @@ harvest pages absent from that report. Without geometry, it visits only accepted
 Whole-book harvesting requires ranking all the book's pages before profiling and aligning;
 `profile --whole-book` alone widens pooling and templates, not the emitted selection.
 
-Early in the milestone, only a book's alignment-accepted pages were harvested: 665 pages across
-the five books. **Page acceptance turned out to be a poor proxy for whether one line bound to the
-right text.** Measured against the recognizer over three books, lines excluded only for alignment
-score agree with the recognizer about as well as accepted lines do — 0.937 to 0.962 for one
-exclusion reason and 0.887 to 0.934 for another, against 0.926 to 0.976 for accepted lines. Lines
+**Page acceptance turned out to be a poor proxy for whether one line bound to the
+right text.** Early in the milestone, only a book's alignment-accepted pages were harvested: 665 pages across
+the five books. Measured against the recognizer over three books, lines excluded only for alignment
+score agree with the recognizer about as well as accepted lines do. One exclusion reason scores
+0.937 to 0.962, and another scores 0.887 to 0.934. Accepted lines score 0.926 to 0.976. Lines
 on illustration pages score far lower, 0.560 to 0.683, which is what page acceptance was really
 screening for.
 
 So a line on a non-accepted page is now admitted when the recognizer reads at least four of every
-five of its transcription words inside its own box. That check needs `--geometry`; without it,
-non-accepted pages are skipped as before. **The same check now runs on accepted pages too**, which
+five of its transcription words inside its own box. That check needs `--geometry`. Without it,
+non-accepted pages are skipped as before.
+
+**The same check now runs on accepted pages too.** That
 is what caught lines whose candidate box had matched the wrong source line: cases like `They` cut
 from `WILL`, or `and` from `side,`. Those mis-bound lines score 0.00 to 0.17 on the recognizer
-check while the lines around them score above 0.8, and the check costs 2.4 to 7.4 percent of
-accepted lines. The recognizer only ever rejects here; a line it agrees with still takes its
+check. The lines around them score above 0.8. The check costs 2.4 to 7.4 percent of
+accepted lines.
+
+The recognizer only ever rejects here. A line it agrees with still takes its
 label from the transcription, never from the recognizer's own read.
 
 **Furniture stays on accepted pages only.** Extending the recognizer-admission check to furniture
-was tried and reverted: on a page most lines do not match, most words fall outside every matched
-line simply because so few lines matched at all, and the `recognized` tier would stop meaning the
-running head and the folio and start meaning ordinary body text that never got matched. That is a
+was tried and reverted. On a page most lines do not match, most words fall outside every matched
+line simply because so few lines matched at all. The `recognized` tier would stop meaning the
+running head and the folio. It would start meaning ordinary body text that never got matched. That is a
 different claim from the one this tier is reviewed against, so it needs its own measurement before
 it can be trusted.
 
@@ -175,49 +223,51 @@ different run:
 
 - **Scoping, letters-only cutting rule, 665 accepted pages:** 187,839 glyphs. This measurement
   found the punctuation-coincidence defect and was superseded before shipping.
-- **First shipped run, `blank-column-runs/v2`, 665 accepted pages, both tiers:** 207,328 glyphs —
-  198,589 `transcribed` and 8,739 `recognized` — in 8 minutes 10 seconds.
+- **First shipped run, `blank-column-runs/v2`, 665 accepted pages, both tiers:** 207,328 glyphs,
+  198,589 `transcribed` and 8,739 `recognized`, in 8 minutes 10 seconds.
 - **Current corpus state, every page harvested, recognizer admission on both accepted and
   non-accepted pages:** **266,549 glyphs from 1,367 of 1,385 pages**, across the five aligned
   books. Harvesting every page raised the `transcribed` count by about 30 percent over the
   accepted-pages-only run.
 
 **Every book carries all 26 lowercase letters, with none missing.** Rare letters such as `q` and
-`z` sit at the low end and common letters run into the tens of thousands; lowercase is what body
+`z` sit at the low end. Common letters run into the tens of thousands. Lowercase is what body
 prose gives, and it gives it deeply.
 
 **Uppercase and digits are thin in narrative prose, not absent, and furniture closes the digit
-gap.** One book yields zero digits from 226 pages of body text because its transcription itself
-contains only 22 digit characters across more than 5,000 matched lines — that is scarcity in the
+gap.** One book yields zero digits from 226 pages of body text, because its transcription itself
+contains only 22 digit characters across more than 5,000 matched lines. That is scarcity in the
 source, not a defect in the harvest. Its running heads and folios carry hundreds of digit
-characters instead, at 0.77 to 0.85 mean recognition confidence, which is why the digit-coverage
+characters instead, at 0.77 to 0.85 mean recognition confidence. That is why the digit-coverage
 gate is measured across both tiers together.
 
 **Yield per page varies nearly sixfold, and separability is why.** The book that separates only a
-quarter of its reconciled words yields under a hundred glyphs a page; the book that separates four
+quarter of its reconciled words yields under a hundred glyphs a page. The book that separates four
 out of five words yields several hundred. Column-run splitting fails wherever letters touch, and
 that is a property of the printing, not a defect in the cutting rule.
 
 ## Faces are tracked, because a per-book inventory that mixes them is not one inventory
 
-PGDP transcribes small capitals in mixed case: `<sc>Lowther Street</sc>` yields the plain letters
-`Lowther Street`, so a capital `O` set as a small capital lands in the ordinary lowercase `o`
+PGDP transcribes small capitals in mixed case. `<sc>Lowther Street</sc>` yields the plain letters
+`Lowther Street`. A capital `O` set as a small capital therefore lands in the ordinary lowercase `o`
 bucket carrying a lowercase label. Nothing that compares a label to a character can see that
 defect, because the character is right and only the letterform is wrong.
 
 `glyph_style.py` resolves each glyph's face from the alignment report's own `style_run` records,
 which already carry one span per `<i>`, `<b>`, and `<sc>` tag matched against F2. No corpus file is
-re-read to get it. Every row carries a `label_style` — `roman`, `italic`, `small_caps`, and so
-on — and both coverage counts and the atlas are keyed by it, so a small-capital `E` and a roman
+re-read to get it. Every row carries a `label_style`: `roman`, `italic`, `small_caps`, and so
+on. Both coverage counts and the atlas are keyed by it, so a small-capital `E` and a roman
 `e` never share a grid. `label_style` is `None`, distinct from `roman`, for every glyph on the
 `recognized` tier, where no style source can be trusted at all.
 
 Measured against each book's F2-wide styled character share, styled text turned out to be a small
-fraction of what got cut in the accepted-pages-only measurement, because that run drew from
-accepted, reconciled, separable words. Most styled text sat in front matter the alignment never
-accepted. Styled glyphs run from none up to about 5.7 percent of one book's `transcribed` glyphs.
-This does not catch small-capital text PGDP leaves unmarked: one page in one book prints a phrase
-in small capitals with an unresolved proofer's query and no markup, and those letterforms still
+fraction of what got cut in the accepted-pages-only measurement. That fraction is small because
+that run drew from accepted, reconciled, separable words. Most styled text sat in front matter the
+alignment never accepted. Styled glyphs run from none up to about 5.7 percent of one book's
+`transcribed` glyphs.
+
+This does not catch small-capital text PGDP leaves unmarked. One page in one book prints a phrase
+in small capitals with an unresolved proofer's query and no markup. Those letterforms still
 sit in the lowercase bucket labelled roman. Only manual review finds that class of error.
 
 ## Five quality flags record observations, never verdicts
@@ -234,12 +284,12 @@ them changes a label or drops a row; each is recorded so a consumer can filter o
 | `unlike_character` | the glyph's ink sits far from its character's median shape in this book | wrong letterforms and multi-letter boxes that size alone cannot see | 0.5 to 5.1% |
 
 A row can also carry `ascends`, `descends`, `touches_line_top`, and `touches_line_bottom`. **These
-four are ordinary facts about a letter, not defects.** Every `h` ascends and every `g` descends;
-treating those as defects would exclude every ascender and descender from its own character's
-shape reference, which is a defect this design deliberately avoids.
+four are ordinary facts about a letter, not defects.** Every `h` ascends and every `g` descends.
+Treating those as defects would exclude every ascender and descender from its own character's
+shape reference. That is a defect this design deliberately avoids.
 
-`unlike_character` is the newest flag and works differently from the other four: it resamples each
-glyph onto a fixed 16-by-12 grid and scores its distance from the median shape its own character
+`unlike_character` is the newest flag and works differently from the other four. It resamples each
+glyph onto a fixed 16-by-12 grid. It scores its distance from the median shape its own character
 takes in that book and style, rather than comparing box dimensions. Glyphs of one character sit 2.5
 to 3.3 units from their own reference at the median; two different characters' references sit 4.3
 to 7.7 units apart. That gap is what the flag reads as signal.
@@ -259,11 +309,11 @@ to 7.7 units apart. That gap is what the flag reads as signal.
 | 6. Atlas reproduction | every sheet re-rendered byte for byte from the rows, manifest page table, and source scans | pass |
 | 7. Latent discipline | zero violations — no manifest or row field claims font identity, point size, advance, side bearing, or tracking | pass |
 
-Gate 3 is reviewed by eye at a legible render scale, not by an automated check: an earlier pass at
-a coarser render scale scored one book's error count at 4 wrong where a legible pass on the same
-sample found 12, because a bare stem cut from an `h` is indistinguishable from a whole letter when
-thirty cells share one row. Any future review of this gate should render at most fifteen cells to a
-row.
+Gate 3 is reviewed by eye at a legible render scale, not by an automated check. An earlier pass at
+a coarser render scale scored one book's error count at 4 wrong, where a legible pass on the same
+sample found 12. That is because a bare stem cut from an `h` is indistinguishable from a whole
+letter when thirty cells share one row. Any future review of this gate should render at most
+fifteen cells to a row.
 
 ## Two measured ceilings mark where geometry stops
 
@@ -277,42 +327,54 @@ the two books. No geometric signal tried so far tells a small capital from an or
 
 **The shape check has a blind list, and a finer comparison grid does not shrink it.** Fourteen
 character pairs in the worst-affected book have shape references closer to each other than a
-single character's own glyphs scatter from their own reference — so no distance threshold can
+single character's own glyphs scatter from their own reference. So no distance threshold can
 ever separate them. The count holds at 14, 15, and 14 pairs across grids of 16 by 12, 24 by 18,
-and 32 by 24 cells: distances scale up with a finer grid, but the pairs' separation does not
+and 32 by 24 cells. Distances scale up with a finer grid, but the pairs' separation does not
 scale with them.
 
-Four of the fourteen pairs are a capital and its lowercase of the same outline — `I`/`l`,
-`O`/`o`, `W`/`w`, `S`/`s` — which the shape check's own size normalization deliberately erases;
-that is the small-capital ceiling restated in another form. The rest differ by only a few pixels:
+Four of the fourteen pairs are a capital and its lowercase of the same outline: `I`/`l`,
+`O`/`o`, `W`/`w`, `S`/`s`. The shape check's own size normalization deliberately erases them.
+That is the small-capital ceiling restated in another form.
+
+The rest differ by only a few pixels:
 `b` from `h` by whether the bowl closes, `c` from `e` by the crossbar. Measured, the `b` reference
-sits 3.34 units from the `h` reference, while `h`'s own glyphs scatter 3.46 units from their own
-reference — so a `b` mislabelled `h` sits well inside ordinary `h` variation, and no threshold on
+sits 3.34 units from the `h` reference. `h`'s own glyphs scatter 3.46 units from their own
+reference. A `b` mislabelled `h` therefore sits well inside ordinary `h` variation. No threshold on
 this grid can catch it.
 
 Scaling each glyph against its own line's x-height, instead of onto one fixed grid, would restore
-the capital-versus-lowercase distinction. That is the named next experiment, at the cost of
-depending on a per-line x-height estimate this milestone already found unreliable on badly printed
-pages — the same pages where these errors concentrate.
+the capital-versus-lowercase distinction. That is the named next experiment. The cost is depending
+on a per-line x-height estimate this milestone already found unreliable on badly printed
+pages. Those are the same pages where these errors concentrate.
 
-## Six reviewed errors survive filtering
+## Six marks survive filtering
 
-Of the 23 wrong labels the Gate 3 review found, the five quality flags catch 17 and cost six false
-positives, at a rate of 23 of 1,050 sampled glyphs. Six wrong labels pass every flag unflagged, and
-they split into two groups.
+Of the 23 marks, 17 carry a quality flag. The filtered pass drops those 17. Six marks carry no
+flag. A crop read on 2026-09-07, at nine times scale with the whole word boxed, splits those six
+differently from the first review.
 
-**Three are a box holding a letter and just enough of a neighbour to stay inside the ordinary
-width spread**, at 1.00 to 1.15 times the character's median width: one glyph cut from an `s` and
-its trailing comma, one from an `a` and one stray stem, and one that swallowed three letters into a
-box labelled as one. No width test reaches this group, because the extra ink is small enough to
-sit inside normal variation.
+Two are defects the flags missed. Cell `s12` in `projectID67a80fde44d34` puts the label `s` on
+the `e` of "times", because the `m` box ends early and the `e` box is a 9-pixel sliver. The
+`unlike_character` flag fires on the two wrecked neighbours and not on the glyph that lands cleanly
+on the wrong letter.
 
-**Three are the right width but the wrong letterform**: a glyph shaped like a `b` labelled `h`, one
-shaped like an `N` labelled `n`, and one shaped like an `E` labelled `e`. These are exactly the
-capital-versus-lowercase and outline-confusion pairs the shape check's blind list names above, so
-no size test and no current shape test reaches them either.
+Cell `e5` in `projectID603d7d5e04ca0` is a missed word gap in a script italic
+on page `100.png`. The source line reads "While o'er the rock the fowler hung,". The box labelled
+`e` holds the letterforms "ler" from the next word. The box labelled `t` holds "the", and the box
+labelled `h` holds "fow".
 
-That is the floor of what geometry-only checking can do against this corpus.
+Three looked correctly cut to that one reader, and that is not a verdict. They are `e13` (the `e`
+of "like"), `h21` (the `h` of "when"), and `a10` (the `a` of "any"). The owner has not re-read
+them.
+
+The sixth is `n16`, the correct small-cap N above. It is not a shape-check failure.
+
+The first review described these six as three boxes that held a letter plus a scrap of a
+neighbour, and three wrong letterforms. Those letterforms were `b` labelled `h`, `N` labelled `n`,
+and `E` labelled `e`. That description was written before the crop read.
+
+The shape-check blind list in the previous
+section still stands as a measured ceiling. It does not explain `n16`.
 
 ## What this does not do
 
@@ -329,11 +391,19 @@ would help the least-separable book the most, but the column-run baseline is mea
 future improvement has a number to beat.
 
 **It does not remove the last labelling coincidence.** A pure-alphanumeric word can still match by
-luck when one letter breaks into two ink runs while another pair touches, which is the source of
-the six errors above, at roughly 0.006 of reviewed glyphs.
+luck when one letter breaks into two ink runs while another pair touches.
 
-**It reaches only books with an alignment report — five of 286 total corpus projects.** Alignment
-is the bottleneck this inventory sits behind; it cannot be run on a book that has not been aligned.
+The recheck also found
+two unflagged defects of a different kind: a cut that walks onto the next letter, and a missed
+word gap in a script italic. How often either happens is not measured.
+
+**It does not ship atlases past the five aligned books.** The scale limit is in "What the command
+writes".
+
+**It reaches only books that already have an alignment report.** That is five books. An earlier
+ranking run saw 286 projects. The extraction check later compared rank reports after the corpus
+grew from 330 projects to 390. Alignment is the bottleneck. A book with no alignment report cannot
+be inventoried.
 
 ## Evidence
 
@@ -356,6 +426,8 @@ is the bottleneck this inventory sits behind; it cannot be run on a book that ha
   books, deterministic across two full runs with the atlas included, atlas re-rendered byte for
 byte from the rows, manifest page table, and source scans on all sheets, and Gate 3 measured at 0.978 pooled label correctness on the
   `transcribed` tier against a floor of 0.98.
-- Verified: state recorded on 2026-09-06 in
-  `docs/handoff/2026-09-06-140411-m15f-gate3-open-and-five-quality-flags.md`, and promoted here the
-  same day.
+- Verified: state recorded on 2026-09-06 and promoted here the same day. The handoff named at
+  promotion, `docs/handoff/2026-09-06-140411-m15f-gate3-open-and-five-quality-flags.md`, is not in
+  this repository or in `pdomain-ocr-synth`. The 2026-09-07 recheck that corrects the 23 marks is
+  `pdomain-ocr-synth` `docs/research/2026-09-07-gate3-recheck-on-the-713-page-alignment.md`.
+  Folded in on 2026-11-12 without repeating the crop read.

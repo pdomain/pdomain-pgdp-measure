@@ -187,7 +187,7 @@ chapter-opening sink stays `unknown` rather than being forced into a class.
   `a176747`, and `f29661f` (original M15a slice).
 - Plans: `2026-08-31-pgdp-page-classification`, retired on 2026-09-06 with a tombstone in
   decisions (the decision log in `pdomain-ocr-synth`).
-- Specs: `docs/specs/2026-08-31-pgdp-whole-book-page-templates-design.md`.
+- Specs, in `pdomain-ocr-synth`: `docs/specs/2026-08-31-pgdp-whole-book-page-templates-design.md`.
 - Corpus verification: two five-project, 60-page profiles were byte-identical,
   and all pages were measured. Three one-band pages were excluded only from
   pooled pitch. Ten reviewed overlays had no false bounds merge or split.
@@ -196,7 +196,7 @@ chapter-opening sink stays `unknown` rather than being forced into a class.
   runs over 1,385 pages showed classified pages rising from 527 to 1,165 after
   the two template-fitting fixes, and reproduced byte-identical profiles on
   replay.
-- Verified: corpus results recorded in `docs/context/current-state.md` and
-  `docs/context/decisions.md`; promoted on 2026-08-24 during the docgraph
+- Verified: corpus results recorded in `pdomain-ocr-synth` at `docs/context/current-state.md`
+  and `docs/context/decisions.md`; promoted on 2026-08-24 during the docgraph
   migration and re-verified on 2026-09-06 against the shipped page-classification
   work.

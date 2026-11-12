@@ -2,7 +2,7 @@
 Status: active
 Owner: CT
 Created: 2026-11-06
-Last verified: 2026-11-06
+Last verified: 2026-11-12
 Kind: process
 ---
 
@@ -14,13 +14,16 @@ Kind: process
 - **Status:** active
 - **Owner:** CT
 - **Created:** 2026-11-06
-- **Last verified:** 2026-11-06
-- **Provenance:** compared the alignment code comment, the alignment architecture, and the typography architecture on 2026-11-06
-- **Disposition:** Records the one claim this repo does not prove.
+- **Last verified:** 2026-11-12
+- **Provenance:** compared the alignment code comment, the alignment architecture, and the typography architecture on 2026-11-06. Rechecked on 2026-11-12. The disagreement is unchanged.
+- **Disposition:** Records the one claim this repo does not prove. Gate 3's open judgment is on the roadmap, not here.
 - **Read when:** deciding whether the 30-page admission floor is still open.
 - **Search terms:** intent map, needs a decision, admission floor, MINIMUM_ACCEPTED_PAGES_PER_BOOK
 
 ## Needs a decision
+
+Gate 3's remaining judgment is on the [roadmap](../roadmap.md). This file is only the admission
+floor.
 
 The 30 accepted-page admission floor is not settled in the sources that name it.
 

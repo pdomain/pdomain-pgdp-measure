@@ -16,10 +16,11 @@ installable without cv2, torch, or doctr, and a test enforces that.
 
 ## Remaining work
 
-One gate is still open. The list is [docs/roadmap.md](docs/roadmap.md). The issue index is [docs/issues/README.md](docs/issues/README.md).
+Two items are open. The list is [docs/roadmap.md](docs/roadmap.md).
 
-Extraction plan and acceptance criteria live in `pdomain-ocr-synth` at
-`docs/plans/2026-09-06-extract-pgdp-measurement-library.md`.
+The extraction plan was retired on 2026-11-06. The tombstone is in `pdomain-ocr-synth` at
+`docs/context/decisions.md`. The cutover note is
+`docs/architecture/measurement-and-labeling.md` in that same repository.
 
 ## The move is verified byte for byte
 

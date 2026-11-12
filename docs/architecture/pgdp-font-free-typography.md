@@ -201,8 +201,8 @@ compositor set.
   0.782, all above the 0.50 floor. Per-gap accuracy read 0.923 to 0.972. The OCR witness flagged
   893 lines, 3.7 to 7.1 percent of matched lines, and reconciliation after discounting them read
   0.860, 0.772, 0.632, 0.870, and 0.847.
-- Verified: corpus results recorded in `docs/context/current-state.md`, then promoted on
-  2026-09-06.
+- Verified: corpus results recorded in `pdomain-ocr-synth` at `docs/context/current-state.md`,
+  then promoted on 2026-09-06.
 
 ## Related
 

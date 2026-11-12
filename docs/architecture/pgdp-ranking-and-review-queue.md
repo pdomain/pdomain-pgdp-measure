@@ -106,5 +106,5 @@ selection and perform scan work under separate versioned contracts.
 - Corpus verification: two runs produced byte-identical reports. The ranker saw
   286 projects, ranked 285, emitted 1,777 stable diagnostics, and selected 600
   pages across 50 projects.
-- Verified: 2026-08-22 in `docs/context/current-state.md`, then promoted on
+- Verified: 2026-08-22 in `pdomain-ocr-synth` `docs/context/current-state.md`, then promoted on
   2026-08-24 during the docgraph migration.
