@@ -52,6 +52,8 @@ source = "vcs"
 exclude = [
     ".venv/**",
     ".venv-container/**",
+    ".docgraph/**",
+    ".worktrees/**",
 ]
 
 [tool.hatch.build.targets.wheel]
