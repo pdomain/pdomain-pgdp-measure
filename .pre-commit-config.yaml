@@ -45,7 +45,7 @@ repos:
     hooks:
     # External hook revisions must be full commit SHAs. A tag can be moved
     # upstream, and pre-commit runs that code on every commit. Update pins
-    # only with `make update-hooks` (`pre-commit autoupdate --freeze`).
+    # only with `just update-hooks` (`pre-commit autoupdate --freeze`).
     -   id: require-frozen-hook-revs
         name: external hook revs are frozen commit SHAs
         language: pygrep

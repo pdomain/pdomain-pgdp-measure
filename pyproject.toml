@@ -211,7 +211,7 @@ exclude = ["**/__pycache__", "**/.venv", "**/node_modules"]
 # "recommended" is the workspace-canonical strict mode, matching pdomain-ocr-synth.
 typeCheckingMode = "recommended"
 
-# The gate is errors only, matching pdomain-ocr-synth's `make typecheck`, which
+# The gate is errors only, matching pdomain-ocr-synth's `just typecheck`, which
 # runs `basedpyright <src> --level error`. The pgdp tree carries 0 errors and
 # 176 informational warnings at this mode, and no baseline file grandfathers it.
 failOnWarnings = false
