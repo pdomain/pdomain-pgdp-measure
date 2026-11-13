@@ -12,7 +12,7 @@
   did not repeat the corpus runs or the crop reading.
 - **Disposition:** Current truth. The per-book glyph inventory plan was retired on 2026-11-12.
   Gate 3 stays open: after the small-caps correction, two books are still under the floor.
-- **Promotes:** `2026-09-05-pgdp-per-book-glyph-inventory` plan, retired 2026-11-12. Tombstone:
+- **Promotion history:** `2026-09-05-pgdp-per-book-glyph-inventory` plan, retired 2026-11-12. Tombstone:
   `docs/context/decisions.md`.
 - **Read when:** building or consuming the glyph inventory, deciding whether its labels are
   trustworthy enough for a task, or asking what synthesis can render in a book's own type.

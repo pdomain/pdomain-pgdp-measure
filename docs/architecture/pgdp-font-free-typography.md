@@ -11,7 +11,7 @@
   runs
 - **Disposition:** Current truth promoted from the complete M15d font-free typographic
   observables and M15e OCR witness plans.
-- **Promotes:** complete `2026-09-02-pgdp-font-free-typographic-observables` and
+- **Promotion history:** complete `2026-09-02-pgdp-font-free-typographic-observables` and
   `2026-09-04-pgdp-ocr-witness-for-continuation-fragments` plans.
 - **Read when:** measuring scan-derived typography, changing word segmentation, wiring the OCR
   witness, or judging what a consumer of `pgdp-typography/v1` can rely on.

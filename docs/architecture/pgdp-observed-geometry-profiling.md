@@ -12,7 +12,7 @@
   work that moved the report to `pgdp-profile/v2`
 - **Disposition:** Current truth promoted from the implemented first M15 observed-geometry
   profiling plan and the implemented page-classification plan.
-- **Promotes:** implemented `2026-08-22-pgdp-observed-geometry-profiler` and
+- **Promotion history:** implemented `2026-08-22-pgdp-observed-geometry-profiler` and
   `2026-08-31-pgdp-page-classification` plans.
 
 `profile` converts a `pgdp-rank/v1` review queue into a deterministic

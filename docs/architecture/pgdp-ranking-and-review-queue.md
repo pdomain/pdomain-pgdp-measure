@@ -9,7 +9,7 @@
 - **Last verified:** 2026-11-07
 - **Provenance:** verified from shipped code, tests, commits, and corpus runs during the 2026-08-24 docgraph migration
 - **Disposition:** Current truth promoted from the implemented M14 ranking and review-queue plan.
-- **Promotes:** implemented `2026-08-22-pgdp-ranking-review-queue` plan.
+- **Promotion history:** implemented `2026-08-22-pgdp-ranking-review-queue` plan.
 
 `rank` builds a deterministic, bounded review queue from local PGDP
 metadata and F2 source. It ranks projects and pages without opening scan images.

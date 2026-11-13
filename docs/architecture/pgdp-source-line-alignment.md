@@ -10,7 +10,7 @@
 - **Provenance:** verified from shipped code, schemas, tests, and the measured five-book corpus runs
 - **Disposition:** Current truth promoted from the implemented M15b source-line alignment,
   fragmented-band correction, and page-classification plans.
-- **Promotes:** implemented `2026-08-23-pgdp-source-line-alignment`,
+- **Promotion history:** implemented `2026-08-23-pgdp-source-line-alignment`,
   `2026-08-31-pgdp-fragmented-band-correction`, and `2026-08-31-pgdp-page-classification` plans.
 - **Read when:** implementing or reviewing `align`, PGDP line candidates, F2 source spans,
   running-head suppression, or scan-to-text alignment.
