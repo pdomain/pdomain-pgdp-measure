@@ -42,6 +42,11 @@ be a file outside `CORPUS_ROOT` and must not resolve to the profile input. The r
 The command reads project F2 text and scan images directly from the corpus. It never opens a font,
 renders text, or reaches a network service.
 
+Scan paths must stay inside the corpus. A scan whose hash differs from the profile is excluded.
+The command also re-reads each project's F2 file after aligning its pages. If those source bytes
+changed or became unavailable, the project's pages are excluded rather than accepted against
+different source text.
+
 ## Eligible source lines come from a lossless F2 tokenizer
 
 The tokenizer reads each F2 page string as Unicode and computes offsets in its UTF-8 encoding. It
@@ -252,6 +257,10 @@ recto and verso. It does not use adjacent pages:
 every measurement comes from one page's own geometry.
 
 ## Evidence
+
+- Implementation review: 2026-11-13 against `alignment.py` and `tests/test_pgdp_alignment.py`.
+- Tests cover scan-hash mismatches, F2 changes during alignment, invalid paths, and missing inputs.
+- Historical corpus measurements below were not rerun.
 
 - Code: `src/pdomain_pgdp_measure/alignment_source.py`,
   `src/pdomain_pgdp_measure/alignment_image.py`,

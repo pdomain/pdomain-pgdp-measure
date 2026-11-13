@@ -1,3 +1,11 @@
+---
+kind: process
+status: active
+owner: CT
+created: 2026-11-13
+last_verified: 2026-11-13
+---
+
 # pdomain-pgdp-measure
 
 Font-free measurement of PGDP scans: geometry, alignment, typography, and glyphs.
@@ -13,6 +21,12 @@ The console script is `pgdp-measure`, with subcommands `rank`, `profile`, `align
 
 Runtime dependencies are exactly pydantic, Pillow, and numpy. This package must stay
 installable without cv2, torch, or doctr, and a test enforces that.
+
+## Development
+
+Run `just ci` for the full gate, including strict documentation checks. `AI=1 just ci` saves
+the full output to `.ci-ai.log`. Read [the agent guidance](AGENTS.md) before editing and
+[the current state](docs/context/current-state.md) for open work and release preparation.
 
 ## Remaining work
 

@@ -36,3 +36,15 @@ older entry is not rewritten.
   `docs/research/2026-09-07-gate3-recheck-on-the-713-page-alignment.md`.
 - Remaining work: [the roadmap](../roadmap.md). Gate 3 still fails on two books after the
   small-caps correction. The 30-page admission floor is still open.
+
+### 2026-11-13 Enabled the documentation workflow
+
+- Context: this repository had architecture and context docs but no docgraph configuration.
+- Decision: use the canonical docgraph bootstrap, with workflow enforcement and legacy detection
+  enabled, `master` as the comparison base, and a strict check at the end of `just ci`.
+- Rationale: the owner authorized the minimal bootstrap for this governed migration. The earlier
+  instruction against adding docgraph applied to the completed Makefile migration.
+- Evidence: `docgraph.toml`, `DOCGRAPH.md`, and `justfile`; the architecture audit checked all
+  eleven previously tracked Markdown documents against code, tests, and history.
+- Remaining work: the open Gate 3 judgments and admission-floor calibration stay on the
+  [roadmap](../roadmap.md) and [intent map](intent-map.md). No plan or spec remained to retire.

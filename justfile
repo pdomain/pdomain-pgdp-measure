@@ -100,6 +100,7 @@ ci:
     set -euo pipefail
     if [[ -n "${AI:-}" ]]; then exec just --quiet _ai ci; fi
     just --quiet setup pre-commit-check lint-check typecheck test build
+    docgraph check --strict
 
 ci-slow:
     #!/usr/bin/env bash

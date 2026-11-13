@@ -89,9 +89,10 @@ the underlying line count separately in `extensions`.
 Emitting a row for every line and word would also be its own problem. Five books at roughly 21,000
 matched lines works out to on the order of 150,000 word-level records, which would dwarf the
 report's own product. So per-line and per-word rows are emitted only for the first
-`--evidence-pages` accepted pages of each book in natural page order, defaulting to 12. Pooled
-book estimates and per-page aggregates still cover every accepted page; only the row-level detail
-is bounded.
+`--evidence-pages` successfully measured pages of each book in natural page order, defaulting to
+12. An accepted page excluded during measurement does not consume that allowance. Pooled
+estimates use successfully measured pages. Excluded pages keep their diagnostics; only the
+row-level detail is bounded by the allowance.
 
 ## Word segmentation moved to v2 because the v1 gap threshold was too low
 
@@ -139,6 +140,11 @@ records, one per page, each carrying recognized words with pixel boxes and confi
 each matched line records what the recognizer read at its first ink run, and whether that run is
 a continuation fragment.
 
+The geometry file applies to one book, so `--geometry` refuses an alignment containing several
+projects. Every geometry record must name that project and use the supported schema version.
+The reader rejects empty files, duplicate page names, and mixed recognizers. The report records
+the geometry file hash and recognizer provenance.
+
 The mechanism is a known gap in the PGDP transcription. F2 rejoins a word broken across two
 printed lines onto the line where it started, so the next line's leading ink run has no F2 word to
 bind to and the run count comes out one over. F2 has erased that evidence, so only the ink can say
@@ -182,6 +188,13 @@ or tracking. `baseline_pitch_px` is a measured pixel distance between two matche
 compositor set.
 
 ## Evidence
+
+- Implementation review: 2026-11-13 against `typography.py` and `ocr_witness.py`.
+- Evidence sampling is covered by
+  `test_evidence_rows_go_to_the_first_measured_pages_in_natural_order` in
+  `tests/test_pgdp_typography.py`.
+- Witness identity and provenance are covered by `tests/test_pgdp_typography_witness.py`.
+- Historical corpus measurements below were not rerun.
 
 - Code: `src/pdomain_pgdp_measure/typography.py`,
   `src/pdomain_pgdp_measure/typography_measure.py`,

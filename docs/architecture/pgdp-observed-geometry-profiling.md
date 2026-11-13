@@ -78,6 +78,10 @@ pooled position: `normal_recto`, `normal_verso`, and `chapter_opening`. Recto an
 separate templates because a book's binding margin can shift the text block between the two sides
 by tens of pixels.
 
+The fitting method is `first-band-templates/v3`. Each template records its own group's
+`first_band_spread_px`, alongside its position, text bounds, band count, page count, and share.
+Stored profiles without the spread field still load.
+
 Each page is classified against those templates by how far its own first band sits from them. A
 page whose offset falls between the head window and the chapter-opening sink is classified
 `unknown` rather than forced into either template. Front matter and plates have no measured
@@ -165,6 +169,14 @@ templates, and a page whose offset falls in the trough between the head window a
 chapter-opening sink stays `unknown` rather than being forced into a class.
 
 ## Evidence
+
+- Implementation review: 2026-11-13 against `page_templates.py`.
+- Spread and compatibility are covered by
+  `test_a_template_records_the_spread_of_its_own_group`,
+  `test_the_spread_survives_a_profile_round_trip`, and
+  `test_a_stored_profile_without_the_key_still_validates` in
+  `tests/test_pgdp_page_templates.py`.
+- Historical corpus measurements below were not rerun.
 
 - Code: `src/pdomain_pgdp_measure/profile_models.py`,
   `src/pdomain_pgdp_measure/profile_input.py`,

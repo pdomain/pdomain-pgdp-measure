@@ -36,6 +36,11 @@ Missing or malformed metadata produces diagnostics. When available project and
 page data permit a record, missing-image status remains recorded on the page.
 The ranker checks image availability without decoding the image.
 
+For each page name, image lookup tries the project root before its `images` directory. It
+supports nested relative names and legacy safe noncanonical spellings. It rejects candidates
+that escape the allowed roots. Absolute names and traversal names are unavailable without a
+diagnostic; failures during path resolution produce `unresolvable_image_path` diagnostics.
+
 ## Page features produce explicit component scores
 
 Each page score records its component contributions. The feature weights and
@@ -92,11 +97,17 @@ selection and perform scan work under separate versioned contracts.
 
 ## Evidence
 
+- Implementation review: 2026-11-13 against `paths.py`.
+- Tests cover the nested-image, legacy-name, unsafe-path, and unresolved-path cases in
+  `tests/test_pgdp_ranking.py`.
+- Historical corpus measurements below were not rerun.
+
 - Code: `src/pdomain_pgdp_measure/models.py`,
   `src/pdomain_pgdp_measure/ordering.py`,
   `src/pdomain_pgdp_measure/f2.py`,
   `src/pdomain_pgdp_measure/features.py`,
   `src/pdomain_pgdp_measure/ranking.py`,
+  `src/pdomain_pgdp_measure/paths.py`,
   `src/pdomain_pgdp_measure/report.py`, and
   `src/pdomain_pgdp_measure/cli.py`.
 - Tests: `tests/test_pgdp_f2.py`, `tests/test_pgdp_features.py`,
